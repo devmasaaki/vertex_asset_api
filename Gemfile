@@ -12,11 +12,14 @@ gem 'pg'
 # Use Puma as the app server
 gem 'puma'
 
+gem 'faker',                   '1.6.3'
+
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 
 # json formatter
-gem 'active_model_serializers'
+#gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
+gem 'jsonapi-resources', git: 'https://github.com/cerebris/jsonapi-resources'
 
 # Force mail version to prevent security issue
 gem 'mail', '2.6.6.rc1'

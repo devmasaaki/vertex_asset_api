@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/cerebris/jsonapi-resources
+  revision: 03807f4f09db08bfce099105e0c63dfbaaf02d92
+  specs:
+    jsonapi-resources (0.10.0.pre)
+      activerecord (>= 4.1)
+      concurrent-ruby
+      railties (>= 4.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -24,11 +33,6 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
-    active_model_serializers (0.10.6)
-      actionpack (>= 4.1, < 6)
-      activemodel (>= 4.1, < 6)
-      case_transform (>= 0.2)
-      jsonapi-renderer (>= 0.1.1.beta1, < 0.2)
     activejob (5.1.1)
       activesupport (= 5.1.1)
       globalid (>= 0.3.6)
@@ -47,8 +51,6 @@ GEM
     bcrypt (3.1.11)
     builder (3.2.3)
     byebug (9.0.6)
-    case_transform (0.2)
-      activesupport
     codeclimate-test-reporter (1.0.8)
       simplecov (<= 0.13)
     concurrent-ruby (1.0.5)
@@ -60,12 +62,13 @@ GEM
     factory_girl_rails (4.8.0)
       factory_girl (~> 4.8.0)
       railties (>= 3.0.0)
+    faker (1.6.3)
+      i18n (~> 0.5)
     ffaker (2.5.0)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     i18n (0.8.1)
     json (2.1.0)
-    jsonapi-renderer (0.1.2)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.6.rc1)
@@ -158,12 +161,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers
   bcrypt
   byebug
   codeclimate-test-reporter
   factory_girl_rails
+  faker (= 1.6.3)
   ffaker
+  jsonapi-resources!
   mail (= 2.6.6.rc1)
   pg
   puma

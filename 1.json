@@ -1,0 +1,346 @@
+{
+  "object_types": {
+    "dmr-categories": [
+      {
+        "_id": "596819f881e10d391000016c",
+        "slug": "dmr-category-0",
+        "title": "dmr-category-0",
+        "content": "",
+        "metafields": [
+          {
+            "title": "Name",
+            "key": "name",
+            "type": "text",
+            "value": "Cat1"
+          },
+          {
+            "title": "List Order",
+            "key": "order",
+            "type": "text",
+            "value": 1
+          },
+          {
+            "title": "Thumbnail",
+            "key": "imageName",
+            "type": "text",
+            "value": ""
+          },
+          {
+            "title": "Image URL",
+            "key": "imageURL",
+            "type": "text",
+            "value": ""
+          },
+          {
+            "title": "Live",
+            "key": "live",
+            "type": "text",
+            "value": true
+          },
+          {
+            "title": "Deleted",
+            "key": "deleted",
+            "type": "text",
+            "value": false
+          }
+        ],
+        "bucket": "59681652ab7c7ba90f0001f2",
+        "type_slug": "dmr-categories",
+        "created": "2017-07-14T01:10:16.588Z",
+        "metadata": {
+          "name": "Cat1",
+          "order": 1,
+          "imageName": "",
+          "imageURL": "",
+          "live": true,
+          "deleted": false
+        }
+      },
+      {
+        "_id": "596844de81e10d3910000359",
+        "slug": "dmr-category-1",
+        "title": "dmr-category-1",
+        "content": "",
+        "metafields": [
+          {
+            "title": "Name",
+            "key": "name",
+            "type": "text",
+            "value": "Cat2"
+          },
+          {
+            "title": "List Order",
+            "key": "order",
+            "type": "text",
+            "value": ""
+          },
+          {
+            "title": "Thumbnail",
+            "key": "imageName",
+            "type": "text",
+            "value": ""
+          },
+          {
+            "title": "Image URL",
+            "key": "imageURL",
+            "type": "text",
+            "value": ""
+          },
+          {
+            "title": "Live",
+            "key": "live",
+            "type": "text",
+            "value": true
+          },
+          {
+            "title": "Deleted",
+            "key": "deleted",
+            "type": "text",
+            "value": false
+          }
+        ],
+        "bucket": "59681652ab7c7ba90f0001f2",
+        "type_slug": "dmr-categories",
+        "created": "2017-07-14T04:13:18.797Z",
+        "metadata": {
+          "name": "Cat2",
+          "order": "",
+          "imageName": "",
+          "imageURL": "",
+          "live": true,
+          "deleted": false
+        }
+      }
+    ],
+    "dmr-contents": [
+      {
+        "_id": "596844ffab7c7ba90f0004ee",
+        "slug": "dmr-contents-1",
+        "title": "dmr-contents-1",
+        "content": "",
+        "metafields": [
+          {
+            "title": "Name",
+            "key": "name",
+            "type": "text",
+            "value": "For2 Cat2"
+          },
+          {
+            "title": "Category",
+            "key": "category",
+            "type": "text",
+            "value": "dmr-category-1"
+          },
+          {
+            "title": "Year",
+            "key": "year",
+            "type": "text",
+            "value": "2009"
+          },
+          {
+            "title": "PDF",
+            "key": "fileName",
+            "type": "text",
+            "value": "coming soon.pdf"
+          },
+          {
+            "title": "PDF URL",
+            "key": "fileURL",
+            "type": "text",
+            "value": "https://cosmicjs.com/uploads/0b8264d0-6b75-11e7-82d6-8db9eae70cd7-coming soon.pdf"
+          },
+          {
+            "title": "URL",
+            "key": "otherURL",
+            "type": "text",
+            "value": ""
+          },
+          {
+            "title": "List Order",
+            "key": "order",
+            "type": "text",
+            "value": 2
+          },
+          {
+            "title": "Live",
+            "key": "live",
+            "type": "text",
+            "value": true
+          },
+          {
+            "title": "Deleted",
+            "key": "deleted",
+            "type": "text",
+            "value": false
+          }
+        ],
+        "bucket": "59681652ab7c7ba90f0001f2",
+        "type_slug": "dmr-contents",
+        "created": "2017-07-14T04:13:51.787Z",
+        "metadata": {
+          "name": "For2 Cat2",
+          "category": "dmr-category-1",
+          "year": "2009",
+          "fileName": "coming soon.pdf",
+          "fileURL": "https://cosmicjs.com/uploads/0b8264d0-6b75-11e7-82d6-8db9eae70cd7-coming soon.pdf",
+          "otherURL": "",
+          "order": 2,
+          "live": true,
+          "deleted": false
+        }
+      },
+      {
+        "_id": "596859ebee54e1da0e000597",
+        "slug": "dmr-contents-2",
+        "title": "dmr-contents-2",
+        "content": "",
+        "metafields": [
+          {
+            "title": "Name",
+            "key": "name",
+            "type": "text",
+            "value": "Three"
+          },
+          {
+            "title": "Category",
+            "key": "category",
+            "type": "text",
+            "value": "dmr-category-1"
+          },
+          {
+            "title": "Year",
+            "key": "year",
+            "type": "text",
+            "value": "2008"
+          },
+          {
+            "title": "PDF",
+            "key": "fileName",
+            "type": "text",
+            "value": "coming soon.pdf"
+          },
+          {
+            "title": "PDF URL",
+            "key": "fileURL",
+            "type": "text",
+            "value": "https://cosmicjs.com/uploads/1801b440-6b75-11e7-9731-953dad8f421b-coming soon.pdf"
+          },
+          {
+            "title": "URL",
+            "key": "otherURL",
+            "type": "text",
+            "value": ""
+          },
+          {
+            "title": "List Order",
+            "key": "order",
+            "type": "text",
+            "value": 1
+          },
+          {
+            "title": "Live",
+            "key": "live",
+            "type": "text",
+            "value": true
+          },
+          {
+            "title": "Deleted",
+            "key": "deleted",
+            "type": "text",
+            "value": false
+          }
+        ],
+        "bucket": "59681652ab7c7ba90f0001f2",
+        "type_slug": "dmr-contents",
+        "created": "2017-07-14T05:43:07.108Z",
+        "metadata": {
+          "name": "Three",
+          "category": "dmr-category-1",
+          "year": "2008",
+          "fileName": "coming soon.pdf",
+          "fileURL": "https://cosmicjs.com/uploads/1801b440-6b75-11e7-9731-953dad8f421b-coming soon.pdf",
+          "otherURL": "",
+          "order": 1,
+          "live": true,
+          "deleted": false
+        }
+      },
+      {
+        "_id": "59681ab7ee54e1da0e000134",
+        "slug": "dmr-contents-0",
+        "title": "dmr-contents-0",
+        "content": "",
+        "metafields": [
+          {
+            "title": "Name",
+            "key": "name",
+            "type": "text",
+            "value": "For1 Cat1"
+          },
+          {
+            "title": "Category",
+            "key": "category",
+            "type": "text",
+            "value": "dmr-category-0"
+          },
+          {
+            "title": "Year",
+            "key": "year",
+            "type": "text",
+            "value": "2010"
+          },
+          {
+            "title": "PDF",
+            "key": "fileName",
+            "type": "text",
+            "value": "coming soon.pdf"
+          },
+          {
+            "title": "PDF URL",
+            "key": "fileURL",
+            "type": "text",
+            "value": "https://cosmicjs.com/uploads/2442e940-6b75-11e7-82d6-8db9eae70cd7-coming soon.pdf"
+          },
+          {
+            "title": "URL",
+            "key": "otherURL",
+            "type": "text",
+            "value": ""
+          },
+          {
+            "title": "List Order",
+            "key": "order",
+            "type": "text",
+            "value": 1
+          },
+          {
+            "title": "Live",
+            "key": "live",
+            "type": "text",
+            "value": true
+          },
+          {
+            "title": "Deleted",
+            "key": "deleted",
+            "type": "text",
+            "value": false
+          }
+        ],
+        "bucket": "59681652ab7c7ba90f0001f2",
+        "type_slug": "dmr-contents",
+        "created": "2017-07-14T01:13:27.709Z",
+        "metadata": {
+          "name": "For1 Cat1",
+          "category": "dmr-category-0",
+          "year": "2010",
+          "fileName": "coming soon.pdf",
+          "fileURL": "https://cosmicjs.com/uploads/2442e940-6b75-11e7-82d6-8db9eae70cd7-coming soon.pdf",
+          "otherURL": "",
+          "order": 1,
+          "live": true,
+          "deleted": false
+        }
+      }
+    ]
+  }
+}

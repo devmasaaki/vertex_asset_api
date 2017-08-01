@@ -73,4 +73,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Table Name Prefix
+  config.active_record.table_name_prefix = "vertex_"
 end

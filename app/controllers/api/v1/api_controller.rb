@@ -1,7 +1,7 @@
 module Api
   module V1
     class ApiController < ApplicationController
-      include ::ActionController::Serialization
+      # include ::ActionController::Serialization
 
       include Concerns::Authenticator
       include Concerns::ErrorHandler
