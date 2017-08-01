@@ -3,5 +3,8 @@ class Category < ApplicationRecord
 
   belongs_to :parent, class_name: "Category"
 
+  belongs_to :asset
+  has_many  :items
+
   scope :toplevel, -> { where(category_type: 0) }
 end
