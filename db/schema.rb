@@ -10,10 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160122193254) do
+ActiveRecord::Schema.define(version: 20170804083737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assets", id: :serial, force: :cascade do |t|
+    t.string "name", limit: 255, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "categories", id: :serial, force: :cascade do |t|
+    t.string "name", limit: 255, null: false
+    t.integer "sort"
+    t.boolean "deleted", default: false
+    t.integer "asset_id"
+    t.integer "item_cnt"
+    t.integer "category_type", default: 0
+    t.integer "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["asset_id"], name: "index_vertex_categories_on_asset_id"
+  end
+
+  create_table "items", id: :serial, force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.string "file"
+    t.string "file_type", default: "PDF"
+    t.integer "category_id"
+    t.integer "sort", default: 0
+    t.boolean "deleted", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_vertex_items_on_category_id"
+  end
 
   create_table "notes", id: :serial, force: :cascade do |t|
     t.string "title"
@@ -42,5 +74,7 @@ ActiveRecord::Schema.define(version: 20160122193254) do
     t.index ["reset_password_token"], name: "index_vertex_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "categories", "assets"
+  add_foreign_key "items", "categories"
   add_foreign_key "notes", "users"
 end

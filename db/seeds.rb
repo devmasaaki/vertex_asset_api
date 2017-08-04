@@ -6,13 +6,66 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-4.times do |n|
-  name = Faker::Name.name
-  Asset.create!(
-    id:n+1,
-    name: name
-    # ,
-    # created_at: Time.zone.now,
-    # updated_at: Time.zone.now
-    )
+require 'factory_girl'
+
+# 4.times do |n|
+#   name = FFaker::Name.name
+#   Asset.create!(
+#     id:n+1,
+#     name: name
+#     # ,
+#     # created_at: Time.zone.now,
+#     # updated_at: Time.zone.now
+#     )
+# end
+
+benchmark = Benchmark.measure do
+  ActiveRecord::Base.establish_connection
+  ActiveRecord::Base.connection.tables.each do |table|
+    next if table == 'schema_migrations'
+
+    # MySQL and PostgreSQL
+    #ActiveRecord::Base.connection.execute("TRUNCATE #{table}")
+
+    # SQLite
+    # ActiveRecord::Base.connection.execute("DELETE FROM #{table}")
+  end
+  ActiveRecord::Base.transaction do
+    # FactoryGirl.create :category
+    # 4.times do
+    #   @debug = FactoryGirl.create(:asset_with_categories)
+    #   puts @debug.id
+    # end
+
+    # FactoryGirl.create(:category_with_subcategory)
+    # FactoryGirl.create(:category_with_items)
+
+    4.times do
+      @asset = FactoryGirl.create(:asset)
+      #puts @asset
+
+      3.times do
+        @cat = FactoryGirl.create(:category, asset: @asset)
+        #puts @cat
+
+        FactoryGirl.create(:item, category: @cat)
+      end
+    end
+
+    #sub category
+    12.times do |n|
+      2.times do
+        @cat = Category.find(n+1)
+        @subcat = FactoryGirl.create(:category, parent: @cat, category_type: 1)
+        #puts @subcat
+        
+        5.times do
+          @pdf = FactoryGirl.create(:item, category: @subcat)
+          #puts @pdf
+        end
+      end
+    end
+  end
 end
+
+puts benchmark
