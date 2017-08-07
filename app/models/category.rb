@@ -8,6 +8,6 @@ class Category < ApplicationRecord
 
   scope :toplevel, -> { where(category_type: 0) }
 
-  validates :parent, presence: true, allow_nil: true
+  # validates :parent, presence: true, allow_nil: true
   validates :asset, presence: true, allow_nil: true
 end

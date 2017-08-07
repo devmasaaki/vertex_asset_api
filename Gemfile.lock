@@ -7,6 +7,13 @@ GIT
       concurrent-ruby
       railties (>= 4.1)
 
+GIT
+  remote: https://github.com/stympy/faker.git
+  revision: 50db39436124a3fab7a2f38e08e17a9b42afa6cc
+  specs:
+    faker (1.8.4)
+      i18n (~> 0.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -62,8 +69,6 @@ GEM
     factory_girl_rails (4.8.0)
       factory_girl (~> 4.8.0)
       railties (>= 3.0.0)
-    faker (1.6.3)
-      i18n (~> 0.5)
     ffaker (2.5.0)
     globalid (0.4.0)
       activesupport (>= 4.2.0)
@@ -85,6 +90,7 @@ GEM
     pg (0.20.0)
     puma (3.8.2)
     rack (2.0.3)
+    rack-cors (1.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.1.1)
@@ -165,12 +171,13 @@ DEPENDENCIES
   byebug
   codeclimate-test-reporter
   factory_girl_rails
-  faker (= 1.6.3)
+  faker!
   ffaker
   jsonapi-resources!
   mail (= 2.6.6.rc1)
   pg
   puma
+  rack-cors
   rails
   rails-controller-testing
   rails-i18n

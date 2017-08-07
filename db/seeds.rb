@@ -59,7 +59,7 @@ benchmark = Benchmark.measure do
         @subcat = FactoryGirl.create(:category, parent: @cat, category_type: 1)
         #puts @subcat
         
-        5.times do
+        2.times do
           @pdf = FactoryGirl.create(:item, category: @subcat)
           #puts @pdf
         end
