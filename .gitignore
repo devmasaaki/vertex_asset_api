@@ -22,3 +22,8 @@
 
 # Ignore code-climate coverage information files.
 /coverage/*
+
+# Ignore public/uploads
+/public/uploads/*
+
+*.pdf

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807020612) do
+ActiveRecord::Schema.define(version: 20170808220908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20170807020612) do
     t.integer "parent_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "assigned", default: true
     t.index ["asset_id"], name: "index_vertex_categories_on_asset_id"
   end
 
@@ -44,6 +45,8 @@ ActiveRecord::Schema.define(version: 20170807020612) do
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "assigned", default: true
+    t.integer "file_size", default: 0
     t.index ["category_id"], name: "index_vertex_items_on_category_id"
   end
 
