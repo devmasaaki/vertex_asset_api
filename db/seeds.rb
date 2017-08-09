@@ -40,15 +40,22 @@ benchmark = Benchmark.measure do
     # FactoryGirl.create(:category_with_subcategory)
     # FactoryGirl.create(:category_with_items)
 
-    4.times do
-      @asset = FactoryGirl.create(:asset)
+    asset = Asset.create(name: 'GAPP Toolkit')
+    Category.create(name: 'Cat1', asset: asset)
+
+    3.times do
+      FactoryGirl.create(:asset)
+    end
+
+    4.times do |n|
+      @asset = Asset.find(n+1)
       #puts @asset
 
       3.times do
         @cat = FactoryGirl.create(:category, asset: @asset)
         #puts @cat
 
-        FactoryGirl.create(:item, category: @cat)
+        FactoryGirl.create(:item, category: @cat, asset: @asset)
       end
     end
 
@@ -56,11 +63,11 @@ benchmark = Benchmark.measure do
     12.times do |n|
       2.times do
         @cat = Category.find(n+1)
-        @subcat = FactoryGirl.create(:category, parent: @cat, category_type: 1)
+        @subcat = FactoryGirl.create(:category, parent: @cat, categorytype: 1, asset: @cat.asset)
         #puts @subcat
         
         2.times do
-          @pdf = FactoryGirl.create(:item, category: @subcat)
+          @pdf = FactoryGirl.create(:item, category: @subcat, asset: @subcat.asset)
           #puts @pdf
         end
       end

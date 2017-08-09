@@ -7,6 +7,7 @@ module Api
       belongs_to :asset
       has_many :items
 
+      filter :asset
       filter :deleted, default: 'false,true'
       filter :categorytype, default: '0,1'
       filter :assigned, default: 'true,false'
