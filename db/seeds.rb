@@ -67,7 +67,7 @@ benchmark = Benchmark.measure do
         #puts @subcat
         
         2.times do
-          @pdf = FactoryGirl.create(:item, category: @subcat, asset: @subcat.asset)
+          @pdf = FactoryGirl.create(:item, category: @subcat, asset: @cat.asset)
           #puts @pdf
         end
       end
@@ -76,3 +76,6 @@ benchmark = Benchmark.measure do
 end
 
 puts benchmark
+
+connection = ActiveRecord::Base.connection()
+connection.execute "update vertex_categories set sub_asset_id = asset_id, asset_id = null where categorytype = 1"

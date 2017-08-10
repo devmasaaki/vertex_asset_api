@@ -1,0 +1,83 @@
+{
+  "categories": [
+    {
+    "title": "cat1",
+    "date": "19 June 2017",
+    "assigned": "true",
+    "subcats": [
+    {
+      "title": "subcat1",
+      "date": "19 June 2017"
+    },
+    {
+      "title": "subcat2",
+      "date": "19 June 2017"
+    }
+    ]
+  },
+  {
+    "title": "cat2",
+    "date": "19 June 2017",
+    "assigned": "true",
+    "subcats": [
+    {
+      "title": "subcat1",
+      "date": "19 June 2017"
+    },
+    {
+      "title": "subcat2",
+      "date": "19 June 2017"
+    }
+    ]
+  },
+  {
+    "title": "cat3",
+    "date": "19 June 2017",
+    "assigned": "false",
+    "subcats": [
+    {
+      "title": "subcat1",
+      "date": "19 June 2017"
+    },
+    {
+      "title": "subcat2",
+      "date": "19 June 2017"
+    }
+    ]
+  }
+  ],
+  "pdf": [
+  {
+    "name": "pdf1",
+    "subcat": "subcat1",
+    "cat": "cat1",
+    "date": "19 June 2017",
+    "assigned": "true",
+    "size": "2MB"
+  },
+  {
+  "name": "pdf2",
+  "subcat": "subcat2",
+  "cat": "cat1",
+  "date": "19 June 2017",
+  "assigned": "true",
+  "size": "2MB"
+  },
+  {
+  "name": "pdf2",
+  "subcat": "subcat2",
+  "cat": "cat2",
+  "date": "19 June 2017",
+  "assigned": "true",
+  "size": "2MB"
+  },
+  {
+  "name": "pdf3",
+  "subcat": "none",
+  "cat": "cat2",
+  "date": "19 June 2017",
+  "assigned": "true",
+  "size": "2MB"
+  }
+  ]
+}

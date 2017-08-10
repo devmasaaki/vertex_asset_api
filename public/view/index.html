@@ -1,0 +1,48 @@
+<!doctype html> <html> <head> <meta charset="utf-8"> <title></title> <meta name="description" content=""> <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"> <link rel="stylesheet" href="styles/v-accordion.css"> <link rel="stylesheet" href="styles/main.711fa8ff.css"> <link rel="stylesheet" href="styles/category.css"> <link rel="stylesheet" href="styles/content.css"> </head> <body ng-app="posterAppApp"> <div class="wrapper"> <div id="header" class="row header" emit-target> <div class="col-xs-12 header-ele header-main" emit-source ng-show="checkLocation('/landing')"> <div class="background"> </div> <div class="border"> </div> </div> <div class="col-xs-12 header-ele header-category" emit-source ng-show="checkLocation('/category')"> <a ng-click="loadQuery('search',fields.searchValue)" class="btn btn-search"> </a> <a ng-click="loadPage('refresh')" class="btn btn-refresh" ng-class="{active1: fields.refresh}"> </a> <div class="background"> <p> Policy Toolkit </p> </div> <div class="hidden border"> </div> </div> <div class="col-xs-12 header-ele header-content" emit-source ng-show="checkLocation('/content')"> <div class="background"> <p> {{location.pageName}} </p> <!--<p class="slug"> {{location.pageSlug}} </p>--> <a ng-href="{{loadPage('#/category')}}" ng-click="resetsearch()" class="btn btn-back"> </a> <a ng-click="loadQuery('search',fields.searchValue)" search-toggle class="btn btn-search"> </a> <a ng-click="loadQuery('favourites', !fields.favourites)" ng-class="{'active':fields.favourites}" class="btn btn-favourite"> </a> <a ng-click="loadPage('refresh')" class="btn btn-refresh" ng-class="{active1: fields.refresh}"> </a> </div> <!--<div class="border"> </div>--> </div> <!--<div class="col-xs-12 header-search" ng-show="getQuery('search')">--> <div ng-hide="searchcat == false" class="col-xs-12 header-search"> <input class="form-control" ng-model-options="{ debounce: 1000 }" ng-model="fields.searchValue" placeholder="search"> </div> <!--<div class="col-xs-12 top">
+			<div class="col-xs-12 logo"> <p> Staff Rosters </p> </div>
+
+			<div class="button-search" ng-click="toggleSearch();"> <img class="" src="./images/button-search.png"> </div>
+			<div class="button-refresh" ng-click="loadPage('refresh')">
+				<img class="" ng-class="{active: fields.refresh }" src="./images/button-refresh.be7a013f.png">
+			</div>
+			<div class="button-favourites" ng-click="toggleFavourites()">
+				<img ng-hide="checkLocation('favourites')" src="./images/button-favourites-white.51da1ea5.png">
+				<img ng-show="checkLocation('favourites')" src="./images/button-favourites-yellow.087f7ccc.png">
+			</div>
+		</div>--> <!--<div class="col-xs-12 search" ng-class="{ active: checkLocation('/search')}">
+			<div class="col-xs-12">
+				<input type="text" class="form-control" ng-model="fields.searchValue" placeholder="search..">
+			</div>
+		</div>--> <!--<div class="col-xs-12 nav">
+			<div class="col-xs-6 button" ng-class="{ active: getCurrentPage().indexOf('/all') !== -1 }" ng-click="loadPage('/all')" >
+				<p class="text"> All {{fields.appTypes}} </p>
+			</div>
+			<div class="col-xs-6 button" ng-class="{ active: getCurrentPage().indexOf('/favourites') !== -1 }" ng-click="loadPage('/favourites')" >
+				<p class="text"> Favourites </p>
+			</div>
+		</div>--> </div> <!--<div class="col-xs-12 filter">
+		<div class="col-xs-12 bottom">
+			<div class="header-image">
+				<img src="./images/logo.f3f0c1c3.png">
+			</div>
+		</div>
+	</div>--> <div class="page {{pageClass}}" ng-style="{ 'height': '93%','top': dom.headerHeight+'px' }" ng-view=""></div> <div id="footer" class="row footer"> <div class="col-xs-12 footer-ele footer-main" ng-show="checkLocation('/')"> <div class="border"> </div> <div class="background"> </div> </div> <!--<div class="footer-image">
+			<img src="./images/logo.f3f0c1c3.png">
+		</div>
+		<div class="footer-bg"> </div>--> </div> <!--<div ng-show="fields.popupInstructions" class="popupInstructions">
+		<div id="close" class="" ng-click="fields.popupInstructions = false;"> <img src="./images/instructions-close.14e2a85f.png"> </div>
+		<div id="search" class="col-xs-offset-2 col-xs-10 col-sm-offset-1 col-sm-6"> <img src="./images/instructions-search.d48b2e41.png"> </div>
+		<div id="plus" class="col-xs-10 col-sm-offset-5 col-sm-6"> <img src="./images/instructions-plus.af289091.png"> </div>
+		<div id="tap" class="col-xs-offset-2 col-xs-10 col-sm-offset-1 col-sm-6"> <img src="./images/instructions-tap.94a69cd8.png"> </div>
+		<div id="tip" class="col-xs-offset-1 col-xs-10 col-sm-offset-3 col-sm-6"> <img src="./images/instructions-tip.da375aa6.png"> </div>
+	</div>--> <div class="loading-cover" ng-show="fields.loading"> <!--<div class="loading-cover">--> <div class="loading-header"> </div> <div class="background"> <div class="col-xs-offset-3 col-xs-6 col-sm-offset-4 col-sm-4 col-md-offset-5 col-md-2 image"> <!--<img class="" src="./images/loading-rosters.9f34b93f.png">--> </div> <div class="col-xs-offset-3 col-xs-6 col-sm-offset-4 col-sm-4 col-md-offset-5 col-md-2 loading-logo"> <!--<img class="" src="./images/logo.f3f0c1c3.png">--> </div> </div> <div class="loading-footer"> </div> </div> </div> <script src="scripts/vendor.ba5dc9fe.js"></script> <script src="scripts/scripts.933b58e3.js"></script> <!--<script>
+          function bootstrapAngular() {
+            console.log("Bootstrapping AngularJS");
+            // This assumes your app is named "app" and is on the body tag: <body ng-app="app">
+            // Change the selector from "body" to whatever you need
+            var domElement = document.querySelector('body');
+            // Change the application name from "app" if needed
+            angular.bootstrap(domElement, ['posterAppApp']);
+          }
+          bootstrapAngular();
+        </script>--> </body> </html>

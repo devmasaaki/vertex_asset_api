@@ -1,0 +1,46 @@
+{
+    "title": "Vertex Policy Toolkit",
+    "logo": "logo.png",
+    "cosmic": {
+        "config": {
+            "bucket": {
+              "slug": "it-policy-toolkit",
+              "read_key":"GtKrPxGhEvDHSSErrM3AJG4dZP4zIVWU1Onw5NP7ndaRdzFwaX",
+              "write_key":"FoQjciWXVktvZXTuan5CXZRn7nGHZcwK2cUCO5hZ9CPdAJHIII"
+            }
+        }
+    },
+    "objects": [
+        {
+            "type": "category",
+            "title": "DMR Category",
+            "logo": "logo.png",
+            "type_slug": "dmr-categories",
+            "object": {
+                "name": { "title":"Name",       "key":"name",       "type":"text", "value":"" },
+                "order": { "title":"List Order", "key":"order",      "type":"text", "value":"" },
+                "imageName": { "title":"Thumbnail",  "key":"imageName",  "type":"text", "value":"" },
+                "imageURL": { "title":"Image URL",  "key":"imageURL",   "type":"text", "value":"" },
+                "live": { "title":"Live",       "key":"live",       "type":"text", "value":"" },
+                "deleted": { "title":"Deleted",    "key":"deleted",    "type":"text", "value":"" }
+            }
+        },
+        {
+            "type": "content",
+            "title": "DMR Content",
+            "logo": "logo.png",
+            "type_slug": "dmr-contents",
+            "object": {
+                "name": { "title":"Name",       "key":"name",       "type":"text", "value":"" },
+                "category": { "title":"Category",       "key":"category",       "type":"text", "value":"" },
+                "year": { "title":"Year",       "key":"year",       "type":"text", "value":"" },
+                "fileName": { "title":"PDF",       "key":"fileName",       "type":"text", "value":"" },
+                "fileURL": { "title":"PDF URL",       "key":"fileURL",       "type":"text", "value":"" },
+                "otherURL": { "title":"URL",       "key":"otherURL",       "type":"text", "value":"" },
+                "order": { "title":"List Order", "key":"order",      "type":"text", "value":"" },
+                "live": { "title":"Live",       "key":"live",       "type":"text", "value":"" },
+                "deleted": { "title":"Deleted",    "key":"deleted",    "type":"text", "value":"" }
+            }
+        }
+    ]
+}
