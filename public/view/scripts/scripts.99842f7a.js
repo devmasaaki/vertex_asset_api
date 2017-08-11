@@ -495,12 +495,14 @@ var posterApp = angular.module("posterAppApp", [ "ngAnimate", "ngCookies", "ngRe
             });
         }
     };
-    $rootScope.yao.getAssetData = function(assetNo) {
+    $rootScope.yao.getAssetData = function(assetNo, callback) {
         var yao1 = new Yao.YaoApi();
         yao1.assetData(assetNo).then(function(assetData) {
             console.log(assetData);
             $rootScope.yao.data = assetData;
+            if (callback) callback(true);
         }).catch(function(error) {
+            if (callback) callback(false);
             console.log(error);
         });
     };
@@ -529,11 +531,17 @@ var posterApp = angular.module("posterAppApp", [ "ngAnimate", "ngCookies", "ngRe
         var final = "";
         if (url === "refresh") {
             $rootScope.fields.refresh = true;
-            if ($rootScope.data.structure) {
-                console.log($rootScope.data.structure.objects[0].type_slug);
-                $rootScope.cosmic.getObjects($rootScope.data.structure.objects[0].type_slug);
-                $rootScope.cosmic.getObjects($rootScope.data.structure.objects[1].type_slug);
-            }
+            $rootScope.yao.getAssetData(1, function(err) {
+                $rootScope.fields.loading = false;
+                $rootScope.fields.refresh = false;
+                if (err) {
+                    $rootScope.loadPage("reload");
+                    $rootScope.appLoad();
+                }
+                if (!err) {
+                    console.log("data refresh failed");
+                }
+            });
         } else if (url === "reload") {
             $route.reload();
         } else if (url === "home") {
@@ -608,16 +616,8 @@ var posterApp = angular.module("posterAppApp", [ "ngAnimate", "ngCookies", "ngRe
         return sorted;
     };
     $rootScope.loadData = function() {
-        $http.get("./resources/cosmic.json").then(function(response) {
-            $rootScope.data.structure = response.data;
-            $rootScope.fields.loading = false;
-            $rootScope.cosmic.config = response.data.cosmic.config;
-            console.log($rootScope.data.structure.objects[0].type_slug);
-            console.log($rootScope.data.structure.objects[1].type_slug);
-            $rootScope.cosmic.getObjects($rootScope.data.structure.objects[0].type_slug);
-            $rootScope.cosmic.getObjects($rootScope.data.structure.objects[1].type_slug);
-            $rootScope.yao.getAssetData(1);
-        });
+        $rootScope.fields.loading = false;
+        $rootScope.yao.getAssetData(1);
         $rootScope.loadPage("back");
     };
     $rootScope.loadData();
@@ -12949,13 +12949,10 @@ angular.module("posterAppApp").controller("CategoryCtrl", [ "$scope", "$rootScop
     };
     $scope.toggle = true;
     $scope.itoggle = true;
-    console.log($rootScope.data.content);
-    console.log($rootScope.data.categories);
 } ]);
 
 posterApp.filter("categoryFilter", function() {
     return function(items, fields) {
-        console.log(items);
         var filtered = [];
         if (items && items.length > 0) {
             for (var i = 0; i < items.length; i++) {
@@ -12991,7 +12988,6 @@ posterApp.filter("categoryFilter", function() {
                 }
             }
         }
-        console.log(filtered);
         return filtered;
     };
 });
