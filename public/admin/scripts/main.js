@@ -5974,6 +5974,18 @@ $("document").ready(function() {
         $("#asset_id").val(asset_id);
         $("#category_id").val(category_id);
         var form = new FormData($("#addfile_form")[0]);
+        var pdf_title = $("#item_title").val();
+        var pdf_file = $("#item_file").val();
+        console.log(pdf_title + " " + pdf_file);
+        if (pdf_title == "") {
+            alert("Please input name");
+            return false;
+        }
+        if (pdf_file == "") {
+            alert("Please choose pdf file to upload");
+            return false;
+        }
+        return true;
         $.ajax({
             url: "http://192.168.0.124:3001/api/v1/items",
             method: "POST",
