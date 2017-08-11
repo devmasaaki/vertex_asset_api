@@ -4,8 +4,8 @@ module Api
       attributes :name, :categorytype, :sort, :deleted,  :assigned, :created_at, :updated_at
       attribute :assetid1, delegate: :sub_asset_id
       has_many :subcategories
-      belongs_to :parent
-      belongs_to :asset
+      has_one :parent
+      has_one :asset
       has_many :items
 
       filter :assetid1
