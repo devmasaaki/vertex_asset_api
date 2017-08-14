@@ -2,7 +2,7 @@
 
 CREATE SEQUENCE public.vertex_sort_seq
     INCREMENT 1
-    START 179
+    START 1
     MINVALUE 1
     MAXVALUE 9223372036854775807
     CACHE 1;
@@ -86,14 +86,20 @@ CREATE TRIGGER item_category_changed
 	
 6. -- udpated category delete function func1()
 
+-- FUNCTION: public.func1()
+
+-- DROP FUNCTION public.func1();
+
 CREATE OR REPLACE FUNCTION public.func1()
     RETURNS trigger
     LANGUAGE 'plpgsql'
     COST 100.0
     VOLATILE NOT LEAKPROOF 
 AS $BODY$
+
 declare 
 cat_id vertex_categories.id%TYPE;
+i RECORD;
 begin
 if NEW.deleted<>OLD.deleted and new.deleted = true then
 
@@ -110,7 +116,9 @@ if NEW.deleted<>OLD.deleted and new.deleted = true then
     	if( new.parent_id is not null) then
             cat_id := new.parent_id;
             /* update items' category_id to the parent_id of deleted sub category */
-            update vertex_items set category_id = cat_id where category_id = new.id;
+            for i in (select id from vertex_items where deleted = false and category_id = new.id order by sort) loop
+            	update vertex_items set category_id = cat_id where id = i.id;
+            end loop;
         end if;
     end if;
     
@@ -126,3 +134,5 @@ return new;
 end;
 
 $BODY$;
+
+

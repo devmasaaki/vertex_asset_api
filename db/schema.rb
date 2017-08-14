@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170809073745) do
+ActiveRecord::Schema.define(version: 20170814111106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20170809073745) do
 
   create_table "categories", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255, null: false
-    t.integer "sort"
+    t.integer "sort", default: -> { "nextval('vertex_sort_seq'::regclass)" }
     t.boolean "deleted", default: false
     t.integer "asset_id"
     t.integer "item_cnt"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20170809073745) do
     t.string "file"
     t.string "file_type", default: "PDF"
     t.integer "category_id"
-    t.integer "sort", default: 0
+    t.integer "sort", default: -> { "nextval('vertex_sort_seq'::regclass)" }
     t.boolean "deleted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -91,7 +91,7 @@ module Api
       end
 
       def item_params
-        params.require(:item).permit(:title, :file, :category_id, :asset_id)
+        params.require(:item).permit(:title, :file, :category_id, :asset_id, :assigned)
       end
 
       def save_pdf_text(pdf)

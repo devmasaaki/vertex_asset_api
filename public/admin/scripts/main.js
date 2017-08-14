@@ -5630,7 +5630,7 @@
     }, {} ]
 }, {}, [ 52 ]);
 
-$("body").data("asset_id", 1);
+var API_HOST = "http://192.168.0.124:3001";
 
 var asset_id = 1;
 
@@ -5644,6 +5644,22 @@ var yao = new Yao.YaoApi();
 
 var step = 0;
 
+var drag = false;
+
+var dialog_effect = {
+    modal: true,
+    show: {
+        effect: "fade",
+        duration: 500
+    },
+    hide: {
+        effect: "explode",
+        duration: 500
+    }
+};
+
+$("body").data("asset_id", 1);
+
 $("document").ready(function() {
     function main() {
         $(".back-icon").hide();
@@ -5652,6 +5668,7 @@ $("document").ready(function() {
         $(".overlay").delay(500).fadeOut("slow", function() {});
     }
     function all() {
+        clearAll();
         $(".back-icon").show();
         $(".search-icon").show();
         $(".refresh-icon").show();
@@ -5673,83 +5690,97 @@ $("document").ready(function() {
                 }
             }
             if (categories[i].deleted == false) {
-                $(".content").append('<div class="dragit col-xs-12"><div class="col-xs-6 no-pad assigned" type="category" dataid="' + i + '" onclick="subnav(' + i + ')"><img class="folder-icon" src="images/folder.png">' + categories[i].name + '</div><div class="col-xs-4">' + categories[i].createdAt + '</div><div class="col-xs-2">' + size + ' Files</div><img class=" edit-icon" catindex="' + i + '" src="images/edit.png"></div>');
-            } else {}
+                var inner_html = '<div class="dragit col-xs-12">' + '<div class="col-xs-6 no-pad assigned" type="category" assigned="true" data-index="' + i + '" onclick="subnav(' + i + ')">' + '<img class="folder-icon" src="images/folder.png">' + categories[i].name + "</div>" + '<div class="col-xs-4">' + categories[i].createdAt + "</div>" + '<div class="col-xs-2">' + size + " Files</div>" + '<img class="edit-icon" assigned="true" data-index="' + i + '" src="images/edit.png">' + "</div>";
+                $(".content").append(inner_html);
+            }
         }
         for (i = 0; i < unassigned_subcategories.length; i++) {
             var size = unassigned_subcategories[i].items.length;
-            $(".uncontent").append('<div class="dragit col-xs-12"><div class="col-xs-6 no-pad unassigned" type="sub" dataid="' + i + '"><img class="folder-icon" src="images/folder.png">' + unassigned_subcategories[i].name + '</div><div class="col-xs-4">' + unassigned_subcategories[i].createdAt + '</div><div class="col-xs-2">' + size + ' Files</div><img class=" edit-icon" catindex="' + i + '" src="images/edit.png"></div>');
+            var inner_html = '<div class="dragit col-xs-12">' + '<div class="col-xs-6 no-pad" type="sub" assigned="false" data-index="' + i + '">' + '<img class="folder-icon" src="images/folder.png">' + unassigned_subcategories[i].name + "</div>" + '<div class="col-xs-4">' + unassigned_subcategories[i].createdAt + "</div>" + '<div class="col-xs-2">' + size + " Files</div>" + '<img class="edit-icon" assigned="false" type="sub" data-index="' + i + '" src="images/edit.png">' + "</div>";
+            $(".uncontent").append(inner_html);
         }
         for (i = 0; i < unassigned_items.length; i++) {
             var size = "2M";
-            $(".uncontent").append('<div class="dragit col-xs-12"><div class="col-xs-6 no-pad unassigned" type="item" dataid="' + i + '"><img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title + '</div><div class="col-xs-4">' + unassigned_items[i].createdAt + '</div><div class="col-xs-2">' + size + ' </div><img itemindex="' + i + '" class="edit-icon edit-item" itemindex="' + i + '" src="images/edit.png"></div>');
+            var inner_html = '<div class="dragit col-xs-12">' + '<div class="col-xs-6 no-pad" type="item" assigned="false" data-index="' + i + '">' + '<img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title + "</div>" + '<div class="col-xs-4">' + unassigned_items[i].createdAt + "</div>" + '<div class="col-xs-2">' + size + " </div>" + '<img class="edit-icon edit-item" assigned="false" type="item" data-index="' + i + '" src="images/edit.png">' + "</div>";
+            $(".uncontent").append(inner_html);
         }
         $(".edit-icon").click(function() {
-            $("body").data("cat_id", $(this).attr("catindex"));
-            var getdata = $("body").data();
-            var cat_id = getdata.cat_id;
-            $("#cat_name1").val(categories[cat_id].name);
-            $("#editcat").dialog();
-        });
-        var source, target;
-        $(".no-pad.unassigned").draggable({
-            drag: function() {
-                source = $(this);
-            }
-        });
-        $(".no-pad.assigned").droppable({
-            drop: function() {
-                target = $(this);
-                if ((source.attr("type") == "item" || source.attr("type") == "sub") && target.attr("type") == "category") {
+            if (!drag) {
+                if ($(this).attr("assigned") == "true") {
+                    $("body").data("category_index", $(this).attr("data-index"));
                     var getdata = $("body").data();
-                    var cat_id = target.attr("dataid");
-                    var sub_item_id = source.attr("dataid");
-                    var category = categories[cat_id];
-                    var sub_item;
-                    if (source.attr("type") == "item") {
-                        sub_item = unassigned_items[sub_item_id];
-                        var dragItem = {
-                            id: sub_item.id,
-                            assigned: true,
-                            category: {
-                                id: category.id,
-                                type: "categories"
-                            }
-                        };
-                        yao.updateItem(dragItem).then(function(result) {
-                            refreshAll(all);
-                        }).catch(function(error) {
-                            alert("Can't update Item from API");
-                            console.log(error);
-                        });
-                    } else if (source.attr("type") == "sub") {
-                        sub_item = unassigned_subcategories[sub_item_id];
-                        var dragSub = {
-                            id: sub_item.id,
-                            assigned: true,
-                            parent: {
-                                id: category.id,
-                                type: "categories"
-                            }
-                        };
-                        console.log("dragitem");
-                        console.log(dragSub);
-                        yao.updateCategory(dragSub).then(function(result) {
-                            refreshAll(all);
-                        }).catch(function(error) {
-                            alert("Can't update Item from API");
-                            console.log(error);
-                        });
+                    var category_index = getdata.category_index;
+                    $("#cat_name1").val(categories[category_index].name);
+                    $("#editcat").dialog(dialog_effect);
+                } else {
+                    if ($(this).attr("type") == "sub") {
+                        $("body").data("sub_index", $(this).attr("data-index"));
+                        var getdata = $("body").data();
+                        var sub_index = getdata.sub_index;
+                        $("#sub_name1").val(unassigned_subcategories[sub_index].name);
+                        $("#editsub").dialog(dialog_effect);
+                    } else if ($(this).attr("type") == "item") {
+                        $("body").data("item_index", $(this).attr("data-index"));
+                        var getdata = $("body").data();
+                        var item_index = getdata.item_index;
+                        $("#file_name1").val(unassigned_items[item_index].title);
+                        $("#editfile").dialog(dialog_effect);
                     }
                 }
+            }
+        });
+        var source, target, same = true;
+        $(".no-pad").draggable({
+            drag: function() {
+                drag = true;
+                var item;
+                if ($(this).attr("type") == "item") {
+                    item = unassigned_items[$(this).attr("data-index")];
+                } else if ($(this).attr("type") == "sub") {
+                    item = unassigned_subcategories[$(this).attr("data-index")];
+                } else if ($(this).attr("type") == "category") {
+                    item = categories[$(this).attr("data-index")];
+                }
+                source = {
+                    assigned: $(this).attr("assigned") == "true",
+                    type: $(this).attr("type"),
+                    data: item
+                };
+            }
+        });
+        $(".no-pad").droppable({
+            drop: function() {
+                var item;
+                if ($(this).attr("type") == "item") {
+                    item = unassigned_items[$(this).attr("data-index")];
+                } else if ($(this).attr("type") == "sub") {
+                    item = unassigned_subcategories[$(this).attr("data-index")];
+                } else if ($(this).attr("type") == "category") {
+                    item = categories[$(this).attr("data-index")];
+                }
+                target = {
+                    assigned: $(this).attr("assigned") == "true",
+                    type: $(this).attr("type"),
+                    data: item
+                };
+                same = false;
+                dragAll(source, target, all);
+            }
+        });
+        $("body").droppable({
+            drop: function() {
+                if (same) {
+                    refreshAll(all);
+                }
+                same = true;
             }
         });
     }
     function sub() {
         step = 1;
         var getcat = $("body").data();
-        var cat_id = getcat.cat_id;
-        var category = categories[cat_id];
+        var category_index = getcat.category_index;
+        var category = categories[category_index];
         $(".subhead").append(category.name);
         for (i = 0; i < category.subcategories.length; i++) {
             var size = 0;
@@ -5759,89 +5790,220 @@ $("document").ready(function() {
                 }
             }
             if (category.subcategories[i].deleted == false) {
-                $(".subcontent").append('<div class="dragit col-xs-12"><div class="col-xs-6 no-pad" type="sub" dataid="' + i + '" onclick="datanav(' + i + ')"><img class="folder-icon" src="images/folder.png">' + category.subcategories[i].name + '</div><div class="col-xs-4">' + category.subcategories[i].createdAt + '</div><div class="col-xs-2">' + size + ' Files</div><img subindex="' + i + '" class="edit-icon edit-sub" src="images/edit.png"></div>');
+                var inner_html = '<div class="dragit col-xs-12">' + '<div class="col-xs-6 no-pad" type="sub" data-index="' + i + '" onclick="datanav(' + i + ')">' + '<img class="folder-icon" src="images/folder.png">' + category.subcategories[i].name + "</div>" + '<div class="col-xs-4">' + category.subcategories[i].createdAt + "</div>" + '<div class="col-xs-2">' + size + " Files</div>" + '<img class="edit-icon edit-sub" data-index="' + i + '" src="images/edit.png">' + "</div>";
+                $(".subcontent").append(inner_html);
             }
         }
         for (i = 0; i < category.items.length; i++) {
             var size = "2M";
             if (category.items[i].deleted == false) {
-                $(".subcontent").append('<div class="dragit col-xs-12"><div class="col-xs-6 no-pad" type="item" dataid="' + i + '"><a href="' + category.items[i].file.url + '"><img class="folder-icon" src="images/pdficon.png">' + category.items[i].title + '</a></div><div class="col-xs-4">' + category.items[i].createdAt + '</div><div class="col-xs-2">' + size + ' </div><img itemindex="' + i + '" class="edit-icon edit-item" itemindex="' + i + '" src="images/edit.png"></div>');
+                var inner_html = '<div class="dragit col-xs-12">' + '<div class="col-xs-6 no-pad" type="item" data-index="' + i + '">' + '<a href="' + category.items[i].file.url + '">' + '<img class="folder-icon" src="images/pdficon.png">' + category.items[i].title + "</a>" + "</div>" + '<div class="col-xs-4">' + category.items[i].createdAt + "</div>" + '<div class="col-xs-2">' + size + " </div>" + '<img class="edit-icon edit-item" data-index="' + i + '" src="images/edit.png">' + "</div>";
+                $(".subcontent").append(inner_html);
             }
         }
         $(".edit-sub").click(function() {
-            $("body").data("sub_id", $(this).attr("subindex"));
+            $("body").data("sub_index", $(this).attr("data-index"));
             var getdata = $("body").data();
-            var cat_id = getdata.cat_id;
-            var sub_id = getdata.sub_id;
-            $("#sub_name1").val(categories[cat_id].subcategories[sub_id].name);
-            $("#editsub").dialog();
+            var category_index = getdata.category_index;
+            var sub_index = getdata.sub_index;
+            $("#sub_name1").val(categories[category_index].subcategories[sub_index].name);
+            $("#editsub").dialog(dialog_effect);
         });
         $(".edit-item").click(function() {
-            $("body").data("sub_id", -1);
-            $("body").data("item_id", $(this).attr("itemindex"));
+            $("body").data("sub_index", -1);
+            $("body").data("item_index", $(this).attr("data-index"));
             var getdata = $("body").data();
-            var cat_id = getdata.cat_id;
-            var item_id = getdata.item_id;
-            $("#file_name1").val(categories[cat_id].items[item_id].title);
-            $("#editfile").dialog();
+            var category_index = getdata.category_index;
+            var item_index = getdata.item_index;
+            $("#file_name1").val(categories[category_index].items[item_index].title);
+            $("#editfile").dialog(dialog_effect);
         });
         var source, target;
-        $('.no-pad[type="item"]').draggable({
+        $(".no-pad").draggable({
             drag: function() {
-                source = $(this);
+                drag = true;
+                var item;
+                if ($(this).attr("type") == "item") {
+                    item = category.items[$(this).attr("data-index")];
+                } else if ($(this).attr("type") == "sub") {
+                    item = category.subcategories[$(this).attr("data-index")];
+                }
+                source = {
+                    assigned: true,
+                    parent_id: category.id,
+                    type: $(this).attr("type"),
+                    data: item
+                };
             }
         });
+        var same = true;
         $(".no-pad").droppable({
             drop: function() {
-                target = $(this);
-                if (source.attr("type") == "item" && target.attr("type") == "sub") {
-                    var getdata = $("body").data();
-                    var cat_id = getdata.cat_id;
-                    var sub_id = target.attr("dataid");
-                    var item_id = source.attr("dataid");
-                    var category = categories[cat_id];
-                    var item = category.items[item_id];
-                    var subcat = category.subcategories[sub_id];
-                    var dragItem = {
-                        id: item.id,
-                        category: {
-                            id: subcat.id,
-                            type: "categories"
-                        }
-                    };
-                    yao.updateItem(dragItem).then(function(result) {
-                        refreshAll(sub);
-                    }).catch(function(error) {
-                        alert("Can't update Item from API");
-                        console.log(error);
-                    });
+                var item;
+                if ($(this).attr("type") == "item") {
+                    item = category.items[$(this).attr("data-index")];
+                } else if ($(this).attr("type") == "sub") {
+                    item = category.subcategories[$(this).attr("data-index")];
                 }
+                target = {
+                    assigned: true,
+                    type: $(this).attr("type"),
+                    data: item
+                };
+                same = false;
+                dragAll(source, target, sub);
+            }
+        });
+        $("body").droppable({
+            drop: function() {
+                if (same) {
+                    refreshAll(sub);
+                }
+                same = true;
             }
         });
     }
     function data() {
         step = 2;
         var getdata = $("body").data();
-        var cat_id = getdata.cat_id;
-        var sub_id = getdata.sub_id;
-        var category = categories[cat_id];
-        var sub_category = category.subcategories[sub_id];
+        var category_index = getdata.category_index;
+        var sub_index = getdata.sub_index;
+        var category = categories[category_index];
+        var sub_category = category.subcategories[sub_index];
         $(".datahead").append('<a href="#/sub">' + category.name + "</a> > " + sub_category.name);
         for (i = 0; i < sub_category.items.length; i++) {
             if (sub_category.items[i].deleted == false) {
                 var size = sub_category.items[i].size ? sub_category.items[i].size : "2M";
-                $(".datacontent").append('<div class="dragit col-xs-12"><a href="' + sub_category.items[i].file.url + '"><div class="col-xs-6 no-pad"><img class="folder-icon" src="images/pdficon.png">' + sub_category.items[i].title + '</div></a><div class="col-xs-4">' + sub_category.items[i].createdAt + '</div><div class="col-xs-2">' + size + '</div><img class="edit-icon" itemindex="' + i + '" src="images/edit.png"></div>');
+                var inner_html = '<div class="dragit col-xs-12">' + '<div class="col-xs-6 no-pad" data-index="' + i + '">' + '<a href="' + sub_category.items[i].file.url + '">' + '<img class="folder-icon" src="images/pdficon.png">' + sub_category.items[i].title + "</a>" + "</div>" + '<div class="col-xs-4">' + sub_category.items[i].createdAt + "</div>" + '<div class="col-xs-2">' + size + "</div>" + '<img class="edit-icon" data-index="' + i + '" src="images/edit.png">' + "</div>";
+                $(".datacontent").append(inner_html);
             }
         }
         $(".edit-icon").click(function() {
-            $("body").data("item_id", $(this).attr("itemindex"));
+            $("body").data("item_index", $(this).attr("data-index"));
             var getdata = $("body").data();
-            var cat_id = getdata.cat_id;
-            var sub_id = getdata.sub_id;
-            var item_id = getdata.item_id;
-            $("#file_name1").val(categories[cat_id].subcategories[sub_id].items[item_id].title);
-            $("#editfile").dialog();
+            var category_index = getdata.category_index;
+            var sub_index = getdata.sub_index;
+            var item_index = getdata.item_index;
+            $("#file_name1").val(categories[category_index].subcategories[sub_index].items[item_index].title);
+            $("#editfile").dialog(dialog_effect);
         });
+        var source, target;
+        var same = true;
+        $(".no-pad").draggable({
+            drag: function() {
+                var item = sub_category.items[$(this).attr("data-index")];
+                source = {
+                    parent_id: sub_category.id,
+                    assigned: true,
+                    type: "item",
+                    data: item
+                };
+            }
+        });
+        $(".no-pad").droppable({
+            drop: function() {
+                var item = sub_category.items[$(this).attr("data-index")];
+                target = {
+                    assigned: true,
+                    type: "item",
+                    data: item
+                };
+                same = false;
+                dragAll(source, target, data);
+            }
+        });
+        $("body").droppable({
+            drop: function() {
+                if (same) {
+                    refreshAll(data);
+                }
+                same = true;
+            }
+        });
+    }
+    function dragAll(source, target, callback) {
+        var url = API_HOST + "/api/v1/dragdrop";
+        var data = {};
+        if (source.type == target.type && source.assigned == target.assigned == true) {
+            if (source.type == "category" && target.type == "category") {
+                url += "/category";
+                data = {
+                    asset_id: asset_id + "",
+                    dragged_id: source.data.id + "",
+                    dropped_id: target.data.id + ""
+                };
+                callback = all;
+            } else if (source.type == "sub" && target.type == "sub") {
+                url += "/subcategory";
+                data = {
+                    parent_id: source.parent_id + "",
+                    dragged_id: source.data.id + "",
+                    dropped_id: target.data.id + ""
+                };
+            } else if (source.type == "item" && target.type == "item") {
+                url += "/item";
+                data = {
+                    category_id: source.parent_id + "",
+                    dragged_id: source.data.id + "",
+                    dropped_id: target.data.id + ""
+                };
+            }
+            $.ajax({
+                url: url,
+                contentType: "application/json",
+                type: "post",
+                data: JSON.stringify(data),
+                success: function(res) {
+                    refreshAll(callback);
+                }
+            });
+        } else if (source.type == "item" && target.type == "sub" && source.assigned == target.assigned == true) {
+            var dragItem = {
+                id: source.data.id,
+                category: {
+                    id: target.data.id,
+                    type: "categories"
+                }
+            };
+            yao.updateItem(dragItem).then(function(result) {
+                refreshAll(callback);
+            }).catch(function(error) {
+                alert("Can't update Item from API");
+                console.log(error);
+            });
+        } else if (source.type == "item" && target.type == "category") {
+            var dragItem = {
+                id: source.data.id,
+                assigned: true,
+                category: {
+                    id: target.data.id,
+                    type: "categories"
+                }
+            };
+            yao.updateItem(dragItem).then(function(result) {
+                refreshAll(callback);
+            }).catch(function(error) {
+                alert("Can't update Item from API");
+                console.log(error);
+            });
+        } else if (source.type == "sub" && target.type == "category") {
+            var dragSub = {
+                id: source.data.id,
+                assigned: true,
+                parent: {
+                    id: target.data.id,
+                    type: "categories"
+                }
+            };
+            yao.updateCategory(dragSub).then(function(result) {
+                refreshAll(callback);
+            }).catch(function(error) {
+                alert("Can't update Item from API");
+                console.log(error);
+            });
+        } else {
+            refreshAll(callback);
+        }
     }
     function clearAll() {
         $(".content").empty();
@@ -5854,7 +6016,6 @@ $("document").ready(function() {
     $("#add_cat").click(createCategory);
     function createCategory() {
         var getdata = $("body").data();
-        var asset_id = getdata.asset_id;
         var cat_name = $("#cat_name").val();
         yao.createCategory(asset_id, cat_name).then(function(result) {
             $("#addcat").dialog("close");
@@ -5868,11 +6029,11 @@ $("document").ready(function() {
     function editCategory() {
         var cat_name = $("#cat_name1").val();
         var getdata = $("body").data();
-        var cat_id = getdata.cat_id;
-        categories[cat_id].name = cat_name;
-        cat_id = categories[cat_id].id;
+        var category_index = getdata.category_index;
+        categories[category_index].name = cat_name;
+        var category_id = categories[category_index].id;
         var newCat = {
-            id: cat_id,
+            id: category_id,
             name: cat_name
         };
         yao.updateCategory(newCat).then(function(result) {
@@ -5886,10 +6047,10 @@ $("document").ready(function() {
     $("#delete_cat").click(deleteCategory);
     function deleteCategory() {
         var getdata = $("body").data();
-        var cat_id = getdata.cat_id;
-        cat_id = categories[cat_id].id;
+        var category_index = getdata.category_index;
+        var category_id = categories[category_index].id;
         var delCat = {
-            id: cat_id,
+            id: category_id,
             deleted: true
         };
         yao.updateCategory(delCat).then(function(result) {
@@ -5903,11 +6064,10 @@ $("document").ready(function() {
     $("#add_sub").click(createSubcategory);
     function createSubcategory() {
         var getdata = $("body").data();
-        var asset_id = getdata.asset_id;
-        var cat_index = getdata.cat_id;
-        var cat_id = categories[cat_index].id;
+        var category_index = getdata.category_index;
+        var category_id = categories[category_index].id;
         var sub_name = $("#sub_name").val();
-        yao.createSubCategory(asset_id, cat_id, sub_name).then(function(result) {
+        yao.createSubCategory(asset_id, category_id, sub_name).then(function(result) {
             $("#addsub").dialog("close");
             refreshAll(sub);
         }).catch(function(error) {
@@ -5919,22 +6079,26 @@ $("document").ready(function() {
     function editSubcategory() {
         var sub_name = $("#sub_name1").val();
         var getdata = $("body").data();
-        var cat_id = getdata.cat_id;
-        var sub_id = getdata.sub_id;
-        categories[cat_id].subcategories[sub_id].name = sub_name;
-        sub_id = categories[cat_id].subcategories[sub_id].id;
-        cat_id = categories[cat_id].id;
+        var category_index = getdata.category_index;
+        var sub_index = getdata.sub_index;
+        var sub_id, category_id;
+        if (step == 1) {
+            sub_id = categories[category_index].subcategories[sub_index].id;
+            category_id = categories[category_index].id;
+        } else if (step == 0) {
+            sub_id = unassigned_subcategories[sub_index].id;
+        }
         var newSub = {
             id: sub_id,
-            name: sub_name,
-            parent: {
-                id: cat_id,
-                type: "categories"
-            }
+            name: sub_name
         };
         yao.updateCategory(newSub).then(function(result) {
             $("#editsub").dialog("close");
-            refreshAll(sub);
+            if (step == 1) {
+                refreshAll(sub);
+            } else if (step == 0) {
+                refreshAll(all);
+            }
         }).catch(function(error) {
             alert("Can't update subcategory from API");
             console.log(error);
@@ -5943,16 +6107,25 @@ $("document").ready(function() {
     $("#delete_sub").click(deleteSubcategory);
     function deleteSubcategory() {
         var getdata = $("body").data();
-        var cat_id = getdata.cat_id;
-        var sub_id = getdata.sub_id;
-        sub_id = categories[cat_id].subcategories[sub_id].id;
+        var category_index = getdata.category_index;
+        var sub_index = getdata.sub_index;
+        var sub_id;
+        if (step == 1) {
+            sub_id = categories[category_index].subcategories[sub_index].id;
+        } else if (step == 0) {
+            sub_id = unassigned_subcategories[sub_index].id;
+        }
         var delCat = {
             id: sub_id,
             deleted: true
         };
         yao.updateCategory(delCat).then(function(result) {
             $("#editsub").dialog("close");
-            refreshAll(sub);
+            if (step == 1) {
+                refreshAll(sub);
+            } else if (step == 0) {
+                refreshAll(all);
+            }
         }).catch(function(error) {
             alert("Can't delete subcategory from API");
             console.log(error);
@@ -5961,15 +6134,17 @@ $("document").ready(function() {
     $("#add_file").click(addFile);
     function addFile() {
         var getdata = $("body").data();
-        var asset_id = getdata.asset_id;
-        var cat_id = getdata.cat_id;
-        var sub_id = getdata.sub_id;
-        var category_id = 0;
+        var category_index = getdata.category_index;
+        var sub_index = getdata.sub_index;
+        var category_id = null;
         try {
-            category_id = categories[cat_id].id;
+            category_id = categories[category_index].id;
         } catch (e) {}
         if (step == 2) {
-            category_id = categories[cat_id].subcategories[sub_id].id;
+            category_id = categories[category_index].subcategories[sub_index].id;
+        }
+        if (step == 0) {
+            $("#assigned").val(false);
         }
         $("#asset_id").val(asset_id);
         $("#category_id").val(category_id);
@@ -5986,16 +6161,19 @@ $("document").ready(function() {
             return false;
         }
         $.ajax({
-            url: "http://192.168.0.124:3001/api/v1/items",
+            url: API_HOST + "/api/v1/items",
             method: "POST",
             data: form,
             processData: false,
             contentType: false,
             success: function(result) {
+                $("#msg_info").modal();
                 if (step == 2) {
                     refreshAll(data);
-                } else {
+                } else if (step == 1) {
                     refreshAll(sub);
+                } else {
+                    refreshAll(all);
                 }
             },
             error: function(er) {
@@ -6009,18 +6187,17 @@ $("document").ready(function() {
         var file_name = $("#file_name1").val();
         var file_tags = $("#file_tags1").val();
         var getdata = $("body").data();
-        var cat_id = getdata.cat_id;
-        var sub_id = getdata.sub_id;
-        var item_index = getdata.item_id;
+        var category_index = getdata.category_index;
+        var sub_index = getdata.sub_index;
+        var item_index = getdata.item_index;
         var item_id;
         if (step == 2) {
-            item_id = categories[cat_id].subcategories[sub_id].items[item_index].id;
-            categories[cat_id].subcategories[sub_id].items[item_index].title = file_name;
+            item_id = categories[category_index].subcategories[sub_index].items[item_index].id;
+        } else if (step == 1) {
+            item_id = categories[category_index].items[item_index].id;
         } else {
-            item_id = categories[cat_id].items[item_index].id;
-            categories[cat_id].items[item_index].title = file_name;
+            item_id = unassigned_items[item_index].id;
         }
-        cat_id = categories[cat_id].id;
         var item = {
             id: item_id,
             title: file_name
@@ -6029,8 +6206,10 @@ $("document").ready(function() {
             $("#editfile").dialog("close");
             if (step == 2) {
                 refreshAll(data);
-            } else {
+            } else if (step == 1) {
                 refreshAll(sub);
+            } else {
+                refreshAll(all);
             }
         }).catch(function(error) {
             alert("Can't update item from API");
@@ -6040,14 +6219,16 @@ $("document").ready(function() {
     $("#delete_file").click(deleteItem);
     function deleteItem() {
         var getdata = $("body").data();
-        var cat_id = getdata.cat_id;
-        var sub_id = getdata.sub_id;
-        var item_index = getdata.item_id;
+        var category_index = getdata.category_index;
+        var sub_index = getdata.sub_index;
+        var item_index = getdata.item_index;
         var item_id;
         if (step == 2) {
-            item_id = categories[cat_id].subcategories[sub_id].items[item_index].id;
-        } else {
-            item_id = categories[cat_id].items[item_index].id;
+            item_id = categories[category_index].subcategories[sub_index].items[item_index].id;
+        } else if (step == 1) {
+            item_id = categories[category_index].items[item_index].id;
+        } else if (step == 0) {
+            item_id = unassigned_items[item_index].id;
         }
         var delItem = {
             id: item_id,
@@ -6057,14 +6238,25 @@ $("document").ready(function() {
             $("#editfile").dialog("close");
             if (step == 2) {
                 refreshAll(data);
-            } else {
+            } else if (step == 1) {
                 refreshAll(sub);
+            } else if (step == 0) {
+                refreshAll(all);
             }
         }).catch(function(error) {
             alert("Can't delete item from API");
             console.log(error);
         });
     }
+    $(".refresh-icon").click(function() {
+        if (step == 0) {
+            refreshAll(all);
+        } else if (step == 1) {
+            refreshAll(sub);
+        } else if (step == 2) {
+            refreshAll(data);
+        }
+    });
     var allroutes = function() {
         var route = window.location.hash.slice(2);
         var sections = $("section");
@@ -6082,28 +6274,54 @@ $("document").ready(function() {
         "/data": data
     };
     var router = Router(routes);
+    function sortList(sort_list) {
+        var list = sort_list;
+        if (!list) {
+            return;
+        }
+        for (var i = 0; i < list.length; i++) {
+            for (var j = i; j < list.length; j++) {
+                if (list[i].sort >= list[j].sort) {
+                    var temp = list[i];
+                    list[i] = list[j];
+                    list[j] = temp;
+                }
+            }
+        }
+        return list;
+    }
+    function sortAll(categories) {
+        var category_list = categories;
+        for (var i = 0; i < category_list.length; i++) {
+            if (category_list[i].subcategories.length > 0) {
+                for (var j = 0; j < category_list[i].subcategories.length; j++) {
+                    category_list[i].subcategories[j].items = sortList(category_list[i].subcategories[j].items);
+                }
+            }
+            category_list[i].items = sortList(category_list[i].items);
+            category_list[i].subcategories = sortList(category_list[i].subcategories);
+        }
+        category_list = sortList(category_list);
+        return category_list;
+    }
     function refreshAll(callback) {
-        yao.assetData(1).then(function(assetData) {
+        yao.assetData(asset_id).then(function(assetData) {
             categories = assetData.categories;
-            console.log("categories1");
-            console.log(categories);
-            yao.getUnassignedSubCategories(1).then(function(data) {
+            categories = sortAll(categories);
+            yao.getUnassignedSubCategories(asset_id).then(function(data) {
                 unassigned_subcategories = data;
-                console.log("unassigned_subcategories2");
-                console.log(unassigned_subcategories);
-                yao.getUnassignedItems(1).then(function(data) {
+                yao.getUnassignedItems(asset_id).then(function(data) {
                     unassigned_items = data;
                     if (callback) {
                         clearAll();
                         callback();
+                        drag = false;
                     } else {
                         router.configure({
                             on: allroutes
                         });
                         router.init();
                     }
-                    console.log("unassigned_items3");
-                    console.log(unassigned_items);
                 }).catch(function(error) {
                     alert("Can't get UnassignedItems from API");
                     console.log(error);
@@ -6127,7 +6345,8 @@ $(".search-icon").click(function() {
 });
 
 $(".newcat-icon").click(function() {
-    $("#addcat").dialog();
+    $("#cat_name").val("");
+    $("#addcat").dialog(dialog_effect);
 });
 
 $(".newfile-icon").click(function() {
@@ -6136,21 +6355,26 @@ $(".newfile-icon").click(function() {
     $("#item_title").val("");
     $("#item_file").val("");
     $("#item_tags").val("");
-    $("#addfile").dialog();
+    $("#addfile").dialog(dialog_effect);
 });
 
 $(".newsub-icon").click(function() {
-    $("#addsub").dialog();
+    $("#sub_name").val("");
+    $("#addsub").dialog(dialog_effect);
 });
 
 function subnav(index) {
-    $("body").data("cat_id", index);
-    window.location = "#/sub";
+    if (!drag) {
+        $("body").data("category_index", index);
+        window.location = "#/sub";
+    }
 }
 
 function datanav(intodata) {
-    $("body").data("sub_id", intodata);
-    window.location = "#/data";
+    if (!drag) {
+        $("body").data("sub_index", intodata);
+        window.location = "#/data";
+    }
 }
 
 function back() {
