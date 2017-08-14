@@ -5371,7 +5371,7 @@
             return t && t.__esModule ? t : {
                 "default": t
             };
-        }(o), a = "http://192.168.0.124:3001/api/v1", s = function() {
+        }(o), a = "http://54.186.1.104:3001/api/v1", s = function() {
             function t() {
                 r(this, t), this.jsonApi = new u.default({
                     apiUrl: a,
@@ -5630,7 +5630,7 @@
     }, {} ]
 }, {}, [ 52 ]);
 
-var API_HOST = "http://192.168.0.124:3001";
+var API_HOST = "http://54.186.1.104:3001";
 
 var asset_id = 1;
 
