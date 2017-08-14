@@ -6140,6 +6140,7 @@ $("document").ready(function() {
         try {
             category_id = categories[category_index].id;
         } catch (e) {}
+        $("#assigned").val(true);
         if (step == 2) {
             category_id = categories[category_index].subcategories[sub_index].id;
         }
