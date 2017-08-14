@@ -26,6 +26,10 @@ Rails.application.routes.draw do
       jsonapi_resources :assets      
       jsonapi_resources :categories
       jsonapi_resources :items
+
+      post 'dragdrop/category'  => 'categories#dragdrop_category', defaults: {format: :json}
+      post 'dragdrop/subcategory'  => 'categories#dragdrop_subcategory', defaults: {format: :json}
+      post 'dragdrop/item'  => 'items#dragdrop_item', defaults: {format: :json}
     end
   end
 
