@@ -5985,7 +5985,6 @@ $("document").ready(function() {
             alert("Please choose pdf file to upload");
             return false;
         }
-        return true;
         $.ajax({
             url: "http://192.168.0.124:3001/api/v1/items",
             method: "POST",
