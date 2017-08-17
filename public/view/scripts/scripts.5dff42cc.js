@@ -500,6 +500,7 @@ var posterApp = angular.module("posterAppApp", [ "ngAnimate", "ngCookies", "ngRe
         yao1.assetData(assetNo).then(function(assetData) {
             console.log(assetData);
             $rootScope.yao.data = assetData;
+            $rootScope.loadPage("reload");
             if (callback) callback(true);
         }).catch(function(error) {
             if (callback) callback(false);
