@@ -8,19 +8,26 @@ Rails.application.routes.draw do
   # mount ActionCable.server => '/cable'
 
   # Api definition
-  scope module: :api do
+  scope module: :api , defaults:{ format: :json} do
     scope module: :v1, constraints: ApiConstraints.new(version: 1,
                                                        default: true) do
       get    'v1/versions/state'       => 'versions#state'
-      post   'users/login'          => 'sessions#create', defaults: { format: :json } 
-      delete 'users/logout'         => 'sessions#destroy', defaults: { format: :json } 
-      post   'users/reset_password' => 'users#reset_password', defaults: { format: :json } 
+      post   'users/login'          => 'sessions#create'
+      delete 'users/logout'         => 'sessions#destroy'
+      post   'users/reset_password' => 'users#reset_password'
       resources :users, only: [:create, :destroy]
       resources :notes
-      resources :assets, only:  [:index]
     end
   end
 
+  get 'users/confirm/:token',        to: 'users#confirm', as: 'users_confirm'
+  get 'users/confirm_reset/:token',  to: 'users#confirm_reset',
+                                     as: 'users_confirm_reset'
+  get 'privacy',                     to: 'pages#privacy'
+  get 'terms',                       to: 'pages#terms'
+  get 'users/regist',                to: 'users#regist'
+
+  # vertex api
   namespace :api do
     namespace :v1 do
       jsonapi_resources :assets      
@@ -32,10 +39,4 @@ Rails.application.routes.draw do
       post 'dragdrop/item'  => 'items#dragdrop_item', defaults: {format: :json}
     end
   end
-
-  get 'users/confirm/:token',        to: 'users#confirm', as: 'users_confirm'
-  get 'users/confirm_reset/:token',  to: 'users#confirm_reset',
-                                     as: 'users_confirm_reset'
-  get 'privacy',                     to: 'pages#privacy'
-  get 'terms',                       to: 'pages#terms'
 end

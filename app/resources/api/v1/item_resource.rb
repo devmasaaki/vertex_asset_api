@@ -1,11 +1,14 @@
 module Api 
   module V1
     class ItemResource < JSONAPI::Resource
-      attributes :title, :content, :file, :sort, :deleted, :assigned, :created_at, :updated_at
-      attribute :filesize, delegate: :file_size
+      attributes :title, :file, :sort, :deleted, :assigned, :created_at, :updated_at
+      attribute :filesize, delegate: :human_size
       attribute :assetid, delegate: :asset_id
-      belongs_to :category
+      has_one :category
 
+      filter :content, apply: ->(records, value, _options) {
+        records.where("content @@ plainto_tsquery(?)", value[0])
+      }
       filter :assetid
       filter :deleted, default: 'false,true'
       filter :assigned, default: 'true,false'

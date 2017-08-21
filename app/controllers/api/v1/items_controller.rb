@@ -1,5 +1,4 @@
-require 'rubygems'
-require 'pdf/reader'
+
 
 module Api
   module V1
@@ -77,8 +76,19 @@ module Api
           if pdf.save
             puts 'Item successfully created.'
             # redirect_to :back, notice: 'Paper successfully created.'   
-            # save_pdf_text(pdf)
-            render json: pdf, status: :created
+            pdf.pdf_to_text
+            # render json: {message: "successfully pdf uploaded"}, status: :created
+
+            resp = Item.find(pdf.id)
+            render json: JSONAPI::ResourceSerializer.new(ItemResource 
+            # ,include: include_resources,
+            # fields: {
+            #   people: [:email, :comments],
+            #   posts: [:title, :author],
+            #   tags: [:name],
+            #   comments: [:body, :post]
+            # }
+            ).serialize_to_hash(ItemResource.new(resp, nil))
           else 
             puts 'Something went wrong.'
             # redirect_to :back, notice: 'Something went wrong.'
@@ -92,23 +102,6 @@ module Api
 
       def item_params
         params.require(:item).permit(:title, :file, :category_id, :asset_id, :assigned)
-      end
-
-      def save_pdf_text(pdf)
-        # a way to read uploaded content using CarrierWave's mount_uploader
-        puts pdf.file.file
-        if  !pdf.file.file.nil? then
-          binary = pdf.file.file
-
-          reader = PDF::Reader.new(binary)
-          puts reader.info
-
-          pdf_text = ""
-          reader.pages.each do |page|
-            puts page.text
-            pdf_text += page.text
-          end
-        end        
       end
 
     end

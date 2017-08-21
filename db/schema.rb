@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170814111106) do
+ActiveRecord::Schema.define(version: 20170819071609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,8 @@ ActiveRecord::Schema.define(version: 20170814111106) do
     t.boolean "assigned", default: true
     t.integer "file_size", default: 0
     t.integer "asset_id"
+    t.string "human_size", limit: 255
+    t.index "to_tsvector('english'::regconfig, content)", name: "vertex_items_content_idx", using: :gin
     t.index ["asset_id"], name: "index_vertex_items_on_asset_id"
     t.index ["category_id"], name: "index_vertex_items_on_category_id"
   end
