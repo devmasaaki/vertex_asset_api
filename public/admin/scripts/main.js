@@ -5675,12 +5675,12 @@ var drag = false;
 var dialog_effect = {
     modal: true,
     show: {
-        effect: "fade",
-        duration: 500
+        effect: "scale",
+        duration: 200
     },
     hide: {
-        effect: "explode",
-        duration: 500
+        effect: "scale",
+        duration: 250
     }
 };
 
@@ -6372,6 +6372,7 @@ $("document").ready(function() {
             alert("Please choose pdf file to upload");
             return false;
         }
+        $("#addfile").dialog("close");
         $.ajax({
             url: API_HOST + "/api/v1/items",
             method: "POST",
@@ -6398,7 +6399,6 @@ $("document").ready(function() {
                         unassigned_items = sortList(unassigned_items);
                     }
                 } catch (e) {}
-                $("#addfile").dialog("close");
                 refreshList();
             },
             error: function(er) {
