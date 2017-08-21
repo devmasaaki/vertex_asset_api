@@ -8,7 +8,7 @@ class Item < ApplicationRecord
 
   mount_uploader :file, FileUploader
 
-  after_create :reload
+  # after_create :reload
   after_update :reload
 
   def pdf_to_text
