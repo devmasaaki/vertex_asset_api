@@ -6,7 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-require 'factory_girl'
+Asset.create!(name: "Policy Toolkit", created_at:Time.zone.now, updated_at:Time.zone.now)
+
+
+# require 'factory_girl'
 
 # 4.times do |n|
 #   name = FFaker::Name.name
