@@ -91,6 +91,7 @@
     1. Setting RAILS_ENV variable  
         `echo 'export RAILS_ENV="production"' >> ~/.bashrc`  
         `echo $RAILS_ENV`  
+				`source ~/.bashrc`  
 
     2. Secret Key  
 				`rake secret`  
