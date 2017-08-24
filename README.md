@@ -89,25 +89,24 @@
 5. Config for production  
 
     1. Setting RAILS_ENV variable  
-        `export RAILS_ENV="production"`  
+        `echo 'export RAILS_ENV="production"' >> ~/.bashrc`  
         `echo $RAILS_ENV`  
 
-    2.  Poppler Install  
+    2. Secret Key  
+				`rake secret`  
+        `echo 'export SECRET_KEY_BASE="8763b534c88feb68347be4f4968f73d7ada68251d726735154f807630afbe8d751ad0a29bf912c45fede713aef07ab7ed74cef95881120666937ad9cb948af09"' >> ~/.bashrc`  
+        `source ~/.bashrc`  
+
+6. Bundle  
+    1.  Poppler Install  
 
         1. required library  
             `sudo apt install g++ autoconf libfontconfig1-dev pkg-config libjpeg-dev libopenjpeg-dev gnome-common libglib2.0-dev gtk-doc-tools libyelp-dev yelp-tools gobject-introspection libsecret-1-dev libnautilus-extension-dev`  
 
         2. poppler  
             `sudo apt-get install poppler-utils`  
-
-    3. secret key  
-				`rake secret`  
-        `export SECRET_KEY_BASE="8763b534c88feb68347be4f4968f73d7ada68251d726735154f807630afbe8d751ad0a29bf912c45fede713aef07ab7ed74cef95881120666937ad9cb948af09" >> ~/.bashrc`  
-        `source ~/.bashrc`  
-
-6. Bundle  
-
-    `bundle install --without development:test`  
+		2.  Bundle Install
+    	`bundle install --without development:test`  
 
 7. Database Migration  
     `rake db:migrate`  
