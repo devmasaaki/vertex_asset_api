@@ -106,7 +106,7 @@
 
         2. Poppler  
             `sudo apt-get install poppler-utils`  
-    2.  Bundle Install
+    2.  Bundle Install  
     	`bundle install --without development:test`  
 
 7. Database Migration  
