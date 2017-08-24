@@ -101,6 +101,7 @@
             `sudo apt-get install poppler-utils`  
 
     3. secret key  
+				`rake secret`
         `export SECRET_KEY_BASE="8763b534c88feb68347be4f4968f73d7ada68251d726735154f807630afbe8d751ad0a29bf912c45fede713aef07ab7ed74cef95881120666937ad9cb948af09" >> ~/.bashrc`  
         `source ~/.bashrc`  
 
