@@ -8,9 +8,9 @@ module Api
       # skip_before_action :ensure_correct_media_type, only: [:create]
 
       def dragdrop_item
-        category_id = JSON.parse(params[:category_id])
-        dragged_id = JSON.parse(params[:dragged_id])
-        dropped_id = JSON.parse(params[:dropped_id])
+        category_id = params[:category_id].to_i
+        dragged_id = params[:dragged_id].to_i
+        dropped_id = params[:dropped_id].to_i
 
         puts "++++++++++++++++item drag and drop requests received from client+++++++++++++++++++++++++++"
         dragged = Item.find(dragged_id) 

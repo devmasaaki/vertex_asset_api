@@ -2,9 +2,9 @@ module Api
   module V1
     class CategoriesController < JSONAPI::ResourceController
       def dragdrop_category
-        asset_id = JSON.parse(params[:asset_id])
-        dragged_id = JSON.parse(params[:dragged_id])
-        dropped_id = JSON.parse(params[:dropped_id])
+        asset_id = params[:asset_id].to_i
+        dragged_id = params[:dragged_id].to_i
+        dropped_id = params[:dropped_id].to_i
 
         puts "++++++++++++++++drag and drop requests received from client+++++++++++++++++++++++++++"
         dragged = Category.find(dragged_id) 
@@ -58,9 +58,9 @@ module Api
       end
 
       def dragdrop_subcategory
-        parent_id = JSON.parse(params[:parent_id])
-        dragged_id = JSON.parse(params[:dragged_id])
-        dropped_id = JSON.parse(params[:dropped_id])
+        parent_id = params[:parent_id].to_i
+        dragged_id = params[:dragged_id].to_i
+        dropped_id = params[:dropped_id].to_i
 
         puts "++++++++++++++++drag and drop requests received from client+++++++++++++++++++++++++++"
         dragged = Category.find(dragged_id) 
