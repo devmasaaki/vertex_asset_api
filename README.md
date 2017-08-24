@@ -101,12 +101,12 @@
 6. Bundle  
     1.  Poppler Install  
 
-        1. required library  
+        1. Required Library  
             `sudo apt install g++ autoconf libfontconfig1-dev pkg-config libjpeg-dev libopenjpeg-dev gnome-common libglib2.0-dev gtk-doc-tools libyelp-dev yelp-tools gobject-introspection libsecret-1-dev libnautilus-extension-dev`  
 
-        2. poppler  
+        2. Poppler  
             `sudo apt-get install poppler-utils`  
-		2.  Bundle Install
+    2.  Bundle Install
     	`bundle install --without development:test`  
 
 7. Database Migration  
