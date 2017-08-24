@@ -14,8 +14,9 @@ development:
 test:
   <<: *default
   database: vertexassetapi_test
-  username: vertexassetapi_user
-  password: vertexassetapi_pass
 
 production:
   <<: *default
+  database: vertex_asset_production
+  username: vertex_asset
+  password: <%= ENV['VERTEX_ASSET_DATABASE_PASSWORD'] %>
