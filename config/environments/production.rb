@@ -76,4 +76,6 @@ Rails.application.configure do
 
   # Table Name Prefix
   config.active_record.table_name_prefix = "vertex_"
+
+  config.assets.compile = true
 end
