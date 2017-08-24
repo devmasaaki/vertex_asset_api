@@ -39,7 +39,7 @@
         2. Check Environment
             `gem env home`
 
-2 Install Rails
+2. Install Rails
     1. Rails
         `gem install rails`
         `rbenv rehash`
