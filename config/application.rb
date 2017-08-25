@@ -27,6 +27,8 @@ module VertexAssetApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
+    config.public_file_server.enabled = true
+
     # don't generate RSpec tests for views and helpers
     config.generators do |g|
       g.test_framework :rspec, fixture: true
@@ -48,5 +50,5 @@ module VertexAssetApi
     end
   end
 
-  config.public_file_server.enabled = true
+
 end
