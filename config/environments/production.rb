@@ -77,4 +77,6 @@ Rails.application.configure do
   # Table Name Prefix
   config.active_record.table_name_prefix = "vertex_"
 
+  config.public_file_server.enabled = true
+
 end
