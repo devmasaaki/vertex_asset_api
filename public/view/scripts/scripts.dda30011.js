@@ -5371,7 +5371,7 @@
             return t && t.__esModule ? t : {
                 "default": t
             };
-        }(o), a = "http://54.186.1.104:3001/api/v1", s = function() {
+        }(o), a = "https://test-vertexpolicytoolkit.interact.technology/api/v1", s = function() {
             function t() {
                 r(this, t), this.jsonApi = new u.default({
                     apiUrl: a,
@@ -5379,9 +5379,9 @@
                 }), this.jsonApi.replaceMiddleware("errors", {
                     name: "yao-error-handler",
                     error: function(t) {
-                        return console.log(t), {
-                            errors: []
-                        };
+                        console.log(t);
+                        var e = void 0;
+                        return t.data.errors && (e = t.data.errors), e;
                     }
                 }), this.jsonApi.define("asset", {
                     name: "",
