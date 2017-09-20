@@ -101,7 +101,7 @@ module Api
       end
 
       def item_params
-        params.require(:item).permit(:title, :file, :category_id, :asset_id, :assigned)
+        params.require(:item).permit(:title, :file, :category_id, :asset_id, :assigned, :tags)
       end
 
     end
