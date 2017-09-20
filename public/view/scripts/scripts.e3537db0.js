@@ -5427,6 +5427,7 @@
                     updatedAt: "",
                     filesize: "",
                     assetid: "",
+                    tags: "",
                     category: {
                         jsonApi: "hasOne",
                         type: "categories"
