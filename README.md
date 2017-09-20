@@ -89,12 +89,15 @@
 5. Config for production  
 
     1. Setting RAILS_ENV variable  
-        `echo 'export RAILS_ENV="production"' >> ~/.bashrc`  
+        `echo 'export RAILS_ENV="production"' >> ~/.bashrc` 
+        `source ~/.bashrc`   
+
+        You can check this using below command.
         `echo $RAILS_ENV`  
-				`source ~/.bashrc`  
+
 
     2. Secret Key  
-				`rake secret`  
+		`rake secret`  
         `echo 'export SECRET_KEY_BASE="8763b534c88feb68347be4f4968f73d7ada68251d726735154f807630afbe8d751ad0a29bf912c45fede713aef07ab7ed74cef95881120666937ad9cb948af09"' >> ~/.bashrc`  
         `source ~/.bashrc`  
 
@@ -114,4 +117,13 @@
     `rake db:seed`  
 
 8. Start Server  
+    1. Start 
+
     `nohup rails s -b 0.0.0.0 -p 3001`  
+
+    2. Stop  
+    
+    `ps -ef | grep puma`  
+    `kill -9 [process_id]`  
+
+    3. Restart  

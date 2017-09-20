@@ -5371,7 +5371,7 @@
             return t && t.__esModule ? t : {
                 "default": t
             };
-        }(o), a = "http://54.186.1.104:3001/api/v1", s = function() {
+        }(o), a = "https://test-vertexpolicytoolkit.interact.technology/api/v1", s = function() {
             function t() {
                 r(this, t), this.jsonApi = new u.default({
                     apiUrl: a,
@@ -5379,9 +5379,9 @@
                 }), this.jsonApi.replaceMiddleware("errors", {
                     name: "yao-error-handler",
                     error: function(t) {
-                        return console.log(t), {
-                            errors: []
-                        };
+                        console.log(t);
+                        var e = void 0;
+                        return t.data.errors && (e = t.data.errors), e;
                     }
                 }), this.jsonApi.define("asset", {
                     name: "",
@@ -5427,6 +5427,7 @@
                     updatedAt: "",
                     filesize: "",
                     assetid: "",
+                    tags: "",
                     category: {
                         jsonApi: "hasOne",
                         type: "categories"
@@ -5656,9 +5657,9 @@
     }, {} ]
 }, {}, [ 52 ]);
 
-var API_HOST = "http://54.186.1.104:3001";
+var API_HOST = "https://test-vertexpolicytoolkit.interact.technology";
 
-var asset_id = 1;
+window.asset_id = 1;
 
 var categories = [];
 
@@ -5676,13 +5677,15 @@ var dialog_effect = {
     modal: true,
     show: {
         effect: "scale",
-        duration: 200
+        duration: 0
     },
     hide: {
         effect: "scale",
-        duration: 250
+        duration: 0
     }
 };
+
+console.log(window.asset_id);
 
 $("body").data("asset_id", 1);
 
@@ -5700,6 +5703,7 @@ $("document").ready(function() {
         $(".refresh-icon").show();
         step = 0;
         for (i = 0; i < categories.length; i++) {
+            console.log(categories[i]);
             var size = 0;
             for (k = 0; k < categories[i].items.length; k++) {
                 if (categories[i].items[k].deleted == false) {
@@ -5758,6 +5762,7 @@ $("document").ready(function() {
                         var getdata = $("body").data();
                         var item_index = getdata.item_index;
                         $("#file_name1").val(unassigned_items[item_index].title);
+                        $("#file_tags1").val(unassigned_items[item_index].tags);
                         $("#editfile").dialog(dialog_effect);
                     }
                 }
@@ -5812,7 +5817,25 @@ $("document").ready(function() {
             }
         });
     }
+    function all1() {
+        all();
+    }
+    function all2() {
+        all();
+    }
+    function all3() {
+        all();
+    }
+    function all4() {
+        all();
+    }
     function sub() {
+        $(".subhead").empty();
+        $(".subcontent").empty();
+        $("#header-sub").empty();
+        $("#header-sub").append('<a href="#/' + window.asset_id + '/all">All files</a>' + " > " + '<span class="subhead"></span>');
+        $("#header-data").empty();
+        $("#header-data").append('<a href="#/' + window.asset_id + '/all">All files</a>' + " > " + '<span class="subhead"></span>' + " > ");
         step = 1;
         var getcat = $("body").data();
         var category_index = getcat.category_index;
@@ -5838,6 +5861,24 @@ $("document").ready(function() {
                 $(".subcontent").append(inner_html);
             }
         }
+        for (i = 0; i < unassigned_subcategories.length; i++) {
+            if (unassigned_subcategories[i].deleted == false) {
+                var size = 0;
+                for (var k = 0; k < unassigned_subcategories[i].items.length; k++) {
+                    if (unassigned_subcategories[i].items[k].deleted == false) {
+                        size++;
+                    }
+                }
+                var inner_html = '<div class="dragit col-xs-12">' + '<div class="col-xs-6 no-pad" type="sub" assigned="false" data-index="' + i + '">' + '<img class="folder-icon" src="images/folder.png">' + unassigned_subcategories[i].name + "</div>" + '<div class="col-xs-4">' + unassigned_subcategories[i].updatedAt + "</div>" + '<div class="col-xs-2">' + size + " Files</div>" + '<img class="edit-icon" assigned="false" type="sub" data-index="' + i + '" src="images/edit.png">' + "</div>";
+                $(".uncontent").append(inner_html);
+            }
+        }
+        for (i = 0; i < unassigned_items.length; i++) {
+            if (unassigned_items[i].deleted == false) {
+                var inner_html = '<div class="dragit col-xs-12">' + '<div class="col-xs-6 no-pad" type="item" assigned="false" data-index="' + i + '">' + '<img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title + "</div>" + '<div class="col-xs-4">' + unassigned_items[i].updatedAt + "</div>" + '<div class="col-xs-2">' + unassigned_items[i].filesize + " </div>" + '<img class="edit-icon edit-item" assigned="false" type="item" data-index="' + i + '" src="images/edit.png">' + "</div>";
+                $(".uncontent").append(inner_html);
+            }
+        }
         $(".edit-sub").click(function() {
             $("body").data("sub_index", $(this).attr("data-index"));
             var getdata = $("body").data();
@@ -5847,12 +5888,23 @@ $("document").ready(function() {
             $("#editsub").dialog(dialog_effect);
         });
         $(".edit-item").click(function() {
+            console.log("EDIT ITEM");
             $("body").data("sub_index", -1);
             $("body").data("item_index", $(this).attr("data-index"));
             var getdata = $("body").data();
             var category_index = getdata.category_index;
             var item_index = getdata.item_index;
             $("#file_name1").val(categories[category_index].items[item_index].title);
+            $("#catselect").empty();
+            console.log(categories);
+            for (i = 0; i < categories.length; i++) {
+                console.log(categories[i]);
+                $("#catselect").append($("<option>", {
+                    value: categories[i].name,
+                    text: categories[i].name
+                }));
+            }
+            $("#file_tags1").val(categories[category_index].items[item_index].tags);
             $("#editfile").dialog(dialog_effect);
         });
         var source, target;
@@ -5904,14 +5956,31 @@ $("document").ready(function() {
             }
         });
     }
+    function sub1() {
+        sub();
+    }
+    function sub2() {
+        sub();
+    }
+    function sub3() {
+        sub();
+    }
+    function sub4() {
+        sub();
+    }
     function data() {
+        $(".datacontent").empty();
+        $(".datahead").empty();
         step = 2;
         var getdata = $("body").data();
         var category_index = getdata.category_index;
         var sub_index = getdata.sub_index;
         var category = categories[category_index];
         var sub_category = category.subcategories[sub_index];
-        $(".datahead").append('<a href="#/sub">' + category.name + "</a> > " + sub_category.name);
+        $("#header-sub").empty();
+        $("#header-sub").append('<a href="#/' + window.asset_id + '/all">All files</a>' + " > " + '<span class="subhead"></span>');
+        $("#header-data").empty();
+        $("#header-data").append('<a href="#/' + window.asset_id + '/all">All files</a>' + " > " + '<a href="#/' + window.asset_id + '/sub">' + category.name + "</a> > " + sub_category.name);
         for (i = 0; i < sub_category.items.length; i++) {
             if (sub_category.items[i].deleted == false) {
                 var size = sub_category.items[i].filesize ? sub_category.items[i].filesize : "2M";
@@ -5919,13 +5988,21 @@ $("document").ready(function() {
                 $(".datacontent").append(inner_html);
             }
         }
+        for (i = 0; i < unassigned_items.length; i++) {
+            if (unassigned_items[i].deleted == false) {
+                var inner_html = '<div class="dragit col-xs-12">' + '<div class="col-xs-6 no-pad" type="item" assigned="false" data-index="' + i + '">' + '<img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title + "</div>" + '<div class="col-xs-4">' + unassigned_items[i].updatedAt + "</div>" + '<div class="col-xs-2">' + unassigned_items[i].filesize + " </div>" + '<img class="edit-icon edit-item" assigned="false" type="item" data-index="' + i + '" src="images/edit.png">' + "</div>";
+                $(".uncontent").append(inner_html);
+            }
+        }
         $(".edit-icon").click(function() {
+            console.log("EDIT ICON");
             $("body").data("item_index", $(this).attr("data-index"));
             var getdata = $("body").data();
             var category_index = getdata.category_index;
             var sub_index = getdata.sub_index;
             var item_index = getdata.item_index;
             $("#file_name1").val(categories[category_index].subcategories[sub_index].items[item_index].title);
+            $("#file_tags1").val(categories[category_index].subcategories[sub_index].items[item_index].tags);
             $("#editfile").dialog(dialog_effect);
         });
         var source, target;
@@ -5968,6 +6045,18 @@ $("document").ready(function() {
             }
         });
     }
+    function data1() {
+        data();
+    }
+    function data2() {
+        data();
+    }
+    function data3() {
+        data();
+    }
+    function data4() {
+        data();
+    }
     function dragAll(source, target, callback) {
         var url = API_HOST + "/api/v1/dragdrop";
         var data = {};
@@ -5975,7 +6064,7 @@ $("document").ready(function() {
             if (source.type == "category" && target.type == "category") {
                 url += "/category";
                 data = {
-                    asset_id: asset_id + "",
+                    asset_id: window.asset_id + "",
                     dragged_id: source.data.id + "",
                     dropped_id: target.data.id + ""
                 };
@@ -6177,7 +6266,8 @@ $("document").ready(function() {
     function createCategory() {
         var getdata = $("body").data();
         var cat_name = $("#cat_name").val();
-        yao.createCategory(asset_id, cat_name).then(function(result) {
+        console.log("add category", window.asset_id, cat_name);
+        yao.createCategory(window.asset_id, cat_name).then(function(result) {
             $("#addcat").dialog("close");
             categories.push(result);
             categories = sortList(categories);
@@ -6251,7 +6341,7 @@ $("document").ready(function() {
         var category_index = getdata.category_index;
         var category_id = categories[category_index].id;
         var sub_name = $("#sub_name").val();
-        yao.createSubCategory(asset_id, category_id, sub_name).then(function(result) {
+        yao.createSubCategory(window.asset_id, category_id, sub_name).then(function(result) {
             $("#addsub").dialog("close");
             categories[category_index].subcategories.push(result);
             categories[category_index].subcategories = sortList(categories[category_index].subcategories);
@@ -6359,7 +6449,7 @@ $("document").ready(function() {
         if (step == 0) {
             $("#assigned").val(false);
         }
-        $("#asset_id").val(asset_id);
+        $("#asset_id").val(window.asset_id);
         $("#category_id").val(category_id);
         var form = new FormData($("#addfile_form")[0]);
         var pdf_title = $("#item_title").val();
@@ -6373,6 +6463,71 @@ $("document").ready(function() {
             return false;
         }
         $("#addfile").dialog("close");
+        $.ajax({
+            url: API_HOST + "/api/v1/items",
+            method: "POST",
+            data: form,
+            processData: false,
+            contentType: false,
+            success: function(result) {
+                $("#msg_info").modal();
+                console.log(result);
+                var item = {};
+                try {
+                    item = result.data.attributes;
+                    item["id"] = result.data.id;
+                    item["createdAt"] = item["created-at"];
+                    item["updatedAt"] = item["updated-at"];
+                    if (step == 2) {
+                        categories[category_index].subcategories[sub_index].items.push(item);
+                        categories[category_index].subcategories[sub_index].items = sortList(categories[category_index].subcategories[sub_index].items);
+                    } else if (step == 1) {
+                        categories[category_index].items.push(item);
+                        categories[category_index].items = sortList(categories[category_index].items);
+                    } else {
+                        unassigned_items.push(item);
+                        unassigned_items = sortList(unassigned_items);
+                    }
+                } catch (e) {}
+                refreshList();
+            },
+            error: function(er) {
+                alert("Can't create item from API");
+            }
+        });
+    }
+    $("#add_file_more").click(addFile);
+    function addFile() {
+        var getdata = $("body").data();
+        var category_index = getdata.category_index;
+        var sub_index = getdata.sub_index;
+        var category_id = null;
+        try {
+            category_id = categories[category_index].id;
+        } catch (e) {}
+        $("#assigned").val(true);
+        if (step == 2) {
+            category_id = categories[category_index].subcategories[sub_index].id;
+        }
+        if (step == 0) {
+            $("#assigned").val(false);
+        }
+        $("#asset_id").val(window.asset_id);
+        $("#category_id").val(category_id);
+        var form = new FormData($("#addfile_form")[0]);
+        var pdf_title = $("#item_title").val();
+        var pdf_file = $("#item_file").val();
+        if (pdf_title == "") {
+            alert("Please input name");
+            return false;
+        }
+        if (pdf_file == "") {
+            alert("Please choose pdf file to upload");
+            return false;
+        }
+        $("#item_title").val("");
+        $("#item_file").val("");
+        $("#item_tags").val("");
         $.ajax({
             url: API_HOST + "/api/v1/items",
             method: "POST",
@@ -6424,22 +6579,26 @@ $("document").ready(function() {
         }
         var item = {
             id: item_id,
-            title: file_name
+            title: file_name,
+            tags: file_tags
         };
         yao.updateItem(item).then(function(result) {
             $("#editfile").dialog("close");
             if (step == 2) {
                 categories[category_index].subcategories[sub_index].items[item_index].title = file_name;
+                categories[category_index].subcategories[sub_index].items[item_index].tags = file_tags;
                 if (result.updatedAt) {
                     categories[category_index].subcategories[sub_index].items[item_index].updatedAt = result.updatedAt;
                 }
             } else if (step == 1) {
                 categories[category_index].items[item_index].title = file_name;
+                categories[category_index].items[item_index].tags = file_tags;
                 if (result.updatedAt) {
                     categories[category_index].items[item_index].updatedAt = result.updatedAt;
                 }
             } else {
                 unassigned_items[item_index].title = file_name;
+                unassigned_items[item_index].tags = file_tags;
                 if (result.updatedAt) {
                     unassigned_items[item_index].updatedAt = result.updatedAt;
                 }
@@ -6495,20 +6654,42 @@ $("document").ready(function() {
         }
     });
     var allroutes = function() {
-        var route = window.location.hash.slice(2);
+        console.log("Whole url", window.location.hash);
+        var start = "#/";
+        var startIndex = window.location.hash.indexOf(start);
+        var data = window.location.hash.slice(startIndex + start.length, window.location.hash.length);
+        var main = data.indexOf("/");
+        if (main !== -1) {
+            route = data.slice(main + 1, data.length);
+            data = data.slice(0, main);
+            $("body").data("asset_id", data);
+        } else {
+            route = data;
+        }
         var sections = $("section");
         var section;
+        console.log("route", route);
+        console.log("data", data);
         section = sections.filter("[data-route=" + route + "]");
         if (section.length) {
-            sections.hide(250);
-            section.show(250);
+            sections.hide(0);
+            section.show(0);
         }
     };
     var routes = {
         "/main": main,
-        "/all": all,
-        "/sub": sub,
-        "/data": data
+        "/1/all": all1,
+        "/1/sub": sub1,
+        "/1/data": data1,
+        "/2/all": all2,
+        "/2/sub": sub2,
+        "/2/data": data2,
+        "/3/all": all3,
+        "/3/sub": sub3,
+        "/3/data": data3,
+        "/4/all": all4,
+        "/4/sub": sub4,
+        "/4/data": data4
     };
     var router = Router(routes);
     function sortList(sort_list) {
@@ -6541,24 +6722,34 @@ $("document").ready(function() {
         category_list = sortList(category_list);
         return category_list;
     }
-    function refreshAll(callback) {
-        yao.assetData(asset_id).then(function(assetData) {
+    window.refreshAll = function(callback) {
+        console.log("window.asset_id", window.asset_id);
+        clearAll();
+        yao.assetData(window.asset_id).then(function(assetData) {
             categories = assetData.categories;
             categories = sortAll(categories);
-            yao.getUnassignedSubCategories(asset_id).then(function(data) {
+            console.log(categories);
+            for (var c = 0; c < categories.length; c++) {
+                for (var s = 0; s < categories[c].subcategories.length; s++) {
+                    for (var si = 0; si < categories[c].subcategories[s].items.length; si++) {
+                        var fileSI = categories[c].subcategories[s].items[si].file.url;
+                        categories[c].subcategories[s].items[si].file.url = API_HOST + fileSI;
+                    }
+                }
+                for (var i = 0; i < categories[c].items.length; i++) {
+                    var fileI = categories[c].items[i].file.url;
+                    categories[c].items[i].file.url = API_HOST + fileI;
+                }
+            }
+            yao.getUnassignedSubCategories(window.asset_id).then(function(data) {
                 unassigned_subcategories = data;
-                yao.getUnassignedItems(asset_id).then(function(data) {
+                yao.getUnassignedItems(window.asset_id).then(function(data) {
                     unassigned_items = data;
                     if (callback) {
                         clearAll();
                         callback();
                         drag = false;
-                    } else {
-                        router.configure({
-                            on: allroutes
-                        });
-                        router.init();
-                    }
+                    } else {}
                 }).catch(function(error) {
                     alert("Can't get UnassignedItems from API");
                     console.log(error);
@@ -6568,10 +6759,19 @@ $("document").ready(function() {
                 console.log(error);
             });
         }).catch(function(error) {
-            alert("Can't get categories from API");
-            console.log(error);
+            clearAll();
+            if (error) {
+                console.log(error);
+                if (error[0].title === "Record not found") {
+                    categories = [];
+                } else {
+                    alert("Cannot connect to server, please try again");
+                }
+            } else {
+                alert("Cannot connect to server, please try again");
+            }
         });
-    }
+    };
     function refreshList() {
         clearAll();
         if (step == 0) {
@@ -6583,7 +6783,11 @@ $("document").ready(function() {
         }
         drag = false;
     }
-    refreshAll();
+    window.refreshAll();
+    router.configure({
+        on: allroutes
+    });
+    router.init();
 });
 
 window.location = "#/main";
@@ -6614,14 +6818,14 @@ $(".newsub-icon").click(function() {
 function subnav(index) {
     if (!drag) {
         $("body").data("category_index", index);
-        window.location = "#/sub";
+        window.location = "#/" + window.asset_id + "/sub";
     }
 }
 
 function datanav(intodata) {
     if (!drag) {
         $("body").data("sub_index", intodata);
-        window.location = "#/data";
+        window.location = "#/" + asset_id + "/data";
     }
 }
 
@@ -6633,14 +6837,15 @@ function back() {
     $(".datacontent").empty();
     $(".datahead").empty();
     var newloc = window.location.hash;
-    if (newloc == "#/sub") {
-        window.location = "#/all";
+    console.log("back", newloc);
+    if (newloc == "#/" + window.asset_id + "/sub") {
+        window.location = "#/" + window.asset_id + "/all";
     }
-    if (newloc == "#/all") {
+    if (newloc == "#/" + window.asset_id + "/all") {
         window.location = "#/main";
     }
-    if (newloc == "#/data") {
-        window.location = "#/sub";
+    if (newloc == "#/" + asset_id + "/data") {
+        window.location = "#/" + asset_id + "/sub";
     }
 }
 
@@ -6653,22 +6858,98 @@ $(window).on("hashchange", function() {
         $(".subcontent").empty();
         $(".datahead").empty();
     }
-    if (newloc == "#/all") {
+    if (newloc == "#/1/all") {
+        $(".content").empty();
         $(".subhead").empty();
         $(".subcontent").empty();
         $(".datacontent").empty();
         $(".datahead").empty();
+        window.asset_id = 1;
+        $("body").data("asset_id", window.asset_id);
+        window.refreshAll();
     }
-    if (newloc == "#/sub") {
+    if (newloc == "#/2/all") {
+        $(".content").empty();
+        $(".subhead").empty();
+        $(".subcontent").empty();
+        $(".datacontent").empty();
+        $(".datahead").empty();
+        window.asset_id = 2;
+        $("body").data("asset_id", window.asset_id);
+        window.refreshAll();
+    }
+    if (newloc == "#/3/all") {
+        $(".subhead").empty();
+        $(".subcontent").empty();
+        $(".datacontent").empty();
+        $(".datahead").empty();
+        window.asset_id = 3;
+        $("body").data("asset_id", window.asset_id);
+        window.refreshAll();
+    }
+    if (newloc == "#/4/all") {
+        $(".subhead").empty();
+        $(".subcontent").empty();
+        $(".datacontent").empty();
+        $(".datahead").empty();
+        window.asset_id = 4;
+        $("body").data("asset_id", window.asset_id);
+        window.refreshAll();
+    }
+    if (newloc == "#/1/sub") {
         $(".content").empty();
         $(".uncontent").empty();
         $(".datacontent").empty();
         $(".datahead").empty();
+        window.refreshAll();
     }
-    if (newloc == "#/data") {
+    if (newloc == "#/2/sub") {
+        $(".content").empty();
+        $(".uncontent").empty();
+        $(".datacontent").empty();
+        $(".datahead").empty();
+        window.refreshAll();
+    }
+    if (newloc == "#/3/sub") {
+        $(".content").empty();
+        $(".uncontent").empty();
+        $(".datacontent").empty();
+        $(".datahead").empty();
+        window.refreshAll();
+    }
+    if (newloc == "#/4/sub") {
+        $(".content").empty();
+        $(".uncontent").empty();
+        $(".datacontent").empty();
+        $(".datahead").empty();
+        window.refreshAll();
+    }
+    if (newloc == "#/1/data") {
         $(".content").empty();
         $(".uncontent").empty();
         $(".subhead").empty();
         $(".subcontent").empty();
+        window.refreshAll();
+    }
+    if (newloc == "#/2/data") {
+        $(".content").empty();
+        $(".uncontent").empty();
+        $(".subhead").empty();
+        $(".subcontent").empty();
+        window.refreshAll();
+    }
+    if (newloc == "#/3/data") {
+        $(".content").empty();
+        $(".uncontent").empty();
+        $(".subhead").empty();
+        $(".subcontent").empty();
+        window.refreshAll();
+    }
+    if (newloc == "#/4/data") {
+        $(".content").empty();
+        $(".uncontent").empty();
+        $(".subhead").empty();
+        $(".subcontent").empty();
+        window.refreshAll();
     }
 });
